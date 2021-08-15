@@ -27,3 +27,5 @@ public_html/hot
 storage/*.key
 /.vagrant
 .phpunit.result.cache
+
+db.sqlite
