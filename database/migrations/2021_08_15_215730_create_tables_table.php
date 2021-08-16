@@ -16,6 +16,7 @@ class CreateTablesTable extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger("number")->unique();
+            $table->string('token', 20)->unique();
             $table->timestamps();
         });
     }
