@@ -19,7 +19,9 @@ class CreateItemsTable extends Migration
             $table->boolean("in_stock");
             $table->text("description");
             $table->unsignedDecimal("price", $precision = 9, $scale = 2);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
         });
     }
 
