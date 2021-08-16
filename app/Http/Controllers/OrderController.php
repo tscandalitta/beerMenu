@@ -10,11 +10,11 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json(Order::all(), 200);
     }
 
     /**
@@ -24,18 +24,24 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $order = Order::create();
+        foreach ($request->input("items") as $key => $item){
+            $order->items()->attach($item, ["items_amount" => $request->input("quantities")[$key]]);
+        }
+        $order->table_id = $request->input("table");
+        $order->save();
+        return response()->json($order, 200);
     }
 
     /**
@@ -69,7 +75,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+
     }
 
     /**

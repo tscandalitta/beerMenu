@@ -10,11 +10,11 @@ class TableController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json(Table::all(), 200);
     }
 
     /**
@@ -31,11 +31,12 @@ class TableController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $item = Table::create($request->all());
+        return response()->json($item, 200);
     }
 
     /**
