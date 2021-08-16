@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('table_id')->references('id')->on('tables');
             $table->text("comments")->nullable();
             $table->enum('state', ['CLOSED', 'OPEN'])->default('OPEN');
+            $table->string('token', 20)->nullable();
             $table->timestamps();
         });
     }
