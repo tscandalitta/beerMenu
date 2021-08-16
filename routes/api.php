@@ -23,6 +23,7 @@ Route::middleware('api')->put('/items/{item}', [ItemController::class,'update'])
 Route::middleware('api')->get('/orders', [OrderController::class,'index']);
 Route::middleware('api')->post('/orders', [OrderController::class,'store']);
 Route::middleware('api')->put('/orders/{order}', [OrderController::class,'update']);
+Route::middleware('api')->get('/orders/table/{table}', [OrderController::class,'ordersByTable']);
 
 Route::middleware('api')->get('/tables', [TableController::class,'index']);
 Route::middleware('api')->post('/tables', [TableController::class,'store']);

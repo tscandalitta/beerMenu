@@ -17,6 +17,14 @@ class OrderController extends Controller
         return response()->json(Order::all(), 200);
     }
 
+    public function ordersByTable(Table $table)
+    {
+        if(request("token") == $table->token){
+            return response()->json(Order::where("token", request("token"))->get());
+        }
+        return response()->json(Order::all());
+    }
+
     /**
      * Show the form for creating a new resource.
      *
