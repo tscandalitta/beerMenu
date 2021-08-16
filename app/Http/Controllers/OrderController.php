@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Table;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -14,7 +15,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return response()->json(Order::all(), 200);
+        if(in_array(request("state"), ["OPEN", "CLOSED"])){
+            return response()->json(Order::where("state", request("state"))->get());
+        }
+        return response()->json(Order::all());
     }
 
     public function ordersByTable(Table $table)
@@ -43,13 +47,22 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = Order::create();
-        foreach ($request->input("items") as $key => $item){
-            $order->items()->attach($item, ["items_amount" => $request->input("quantities")[$key]]);
+        $table = Table::find($request->input("table"));
+
+        if($table->token == $request->input("token")){
+            $order = Order::create();
+            foreach ($request->input("items") as $key => $item){
+                $order->items()->attach($item, ["items_amount" => $request->input("quantities")[$key]]);
+            }
+            $order->table_id = $request->input("table");
+            $order->token = $request->input("token");
+            error_log($request->input("token"));
+            $order->save();
+            return response()->json($order);
         }
-        $order->table_id = $request->input("table");
-        $order->save();
-        return response()->json($order, 200);
+
+        return response()->json(["msg" => "Unauthorized"], 401);
+
     }
 
     /**
@@ -85,7 +98,7 @@ class OrderController extends Controller
     {
         $order->fill($request->all());
         $order->save();
-        return response()->json($order, 200);
+        return response()->json($order);
     }
 
     /**
