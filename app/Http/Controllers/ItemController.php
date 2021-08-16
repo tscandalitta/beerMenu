@@ -14,7 +14,10 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return response()->json(Item::all(), 200);
+        if(request("in_stock") == "true"){
+            return response()->json(Item::where("in_stock", true)->get());
+        }
+        return response()->json(Item::all());
     }
 
     /**
@@ -36,7 +39,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $item = Item::create($request->all());
-        return response()->json($item, 200);
+        return response()->json($item);
     }
 
     /**
