@@ -15,6 +15,10 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->text("name");
+            $table->boolean("in_stock");
+            $table->text("description");
+            $table->unsignedDecimal("price", $precision = 9, $scale = 2);
             $table->timestamps();
         });
     }
