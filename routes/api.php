@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('api')->get('/items', [ItemController::class,'index']);
+Route::middleware('api')->post('/items', [ItemController::class,'store']);
+Route::middleware('api')->put('/items/{item}', [ItemController::class,'update']);
+
+Route::middleware('api')->get('/orders', [OrderController::class,'index']);
+Route::middleware('api')->post('/orders', [OrderController::class,'store']);
+
+Route::middleware('api')->get('/tables', [TableController::class,'index']);
+Route::middleware('api')->post('/tables', [TableController::class,'store']);
+
+

@@ -10,11 +10,11 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json(Item::all(), 200);
     }
 
     /**
@@ -24,18 +24,19 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $item = Item::create($request->all());
+        return response()->json($item, 200);
     }
 
     /**
@@ -65,11 +66,13 @@ class ItemController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $item->fill($request->all());
+        $item->save();
+        return response()->json($item, 200);
     }
 
     /**
@@ -80,6 +83,6 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+
     }
 }
