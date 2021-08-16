@@ -71,11 +71,13 @@ class OrderController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Order $order)
     {
-
+        $order->fill($request->all());
+        $order->save();
+        return response()->json($order, 200);
     }
 
     /**
