@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Table;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class OrderController extends Controller
         if(in_array(request("state"), ["OPEN", "CLOSED"])){
             return response()->json(Order::where("state", request("state"))->get());
         }
-        return response()->json(Order::all());
+        return response()->json(OrderResource::collection(Order::all()));
     }
 
     public function ordersByTable(Table $table)
@@ -48,17 +49,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $table = Table::find($request->input("table"));
-
         if($table->token == $request->input("token")){
             $order = Order::create();
             $this->associateItemsToOrder($request, $order);
             $order->table_id = $request->input("table");
             $order->token = $request->input("token");
-            error_log($request->input("token"));
             $order->save();
             return response()->json($order);
         }
-
         return response()->json(["msg" => "Unauthorized"], 401);
 
     }
