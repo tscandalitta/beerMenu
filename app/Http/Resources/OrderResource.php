@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
         return [
             'comments' => $this->comments,
             'state' => $this->state,
+            'table' => $this->table_id,
             'items' => $items,
             'total' => $items->sum('price'),
             'created_at' => $this->created_at
