@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/orders/real_time', function () {
     return view('orders.realtime');
-});
+})->middleware(['auth']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
