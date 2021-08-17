@@ -19,4 +19,10 @@ class Order extends Model
     public function table(){
         return $this->hasOne(Table::class);
     }
+
+    public function getTotal(){
+        return $this->items->reduce(function ($carry, $item) {
+            return $carry + $item->price * $item->pivot->items_amount;
+        });
+    }
 }
