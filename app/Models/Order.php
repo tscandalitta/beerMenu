@@ -12,7 +12,8 @@ class Order extends Model
 
 
     public function items(){
-        return $this->belongsToMany(Item::class);
+        return $this->belongsToMany(Item::class)
+            ->withPivot("items_amount");
     }
 
     public function table(){
