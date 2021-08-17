@@ -14,7 +14,7 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        $items = new ItemResource($this->items, $this->id);
+        $items = ItemWithPivotResource::collection($this->items);
         return [
             'comments' => $this->comments,
             'state' => $this->state,
