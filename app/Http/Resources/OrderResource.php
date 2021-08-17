@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
             'state' => $this->state,
             'table' => $this->table_id,
             'items' => $items,
-            'total' => $items->sum('price'),
+            'total' => $this->getTotal(),
             'created_at' => $this->created_at
         ];
     }
