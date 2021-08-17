@@ -51,9 +51,7 @@ class OrderController extends Controller
 
         if($table->token == $request->input("token")){
             $order = Order::create();
-            foreach ($request->input("items") as $key => $item){
-                $order->items()->attach($item, ["items_amount" => $request->input("quantities")[$key]]);
-            }
+            $this->associateItemsToOrder($request, $order);
             $order->table_id = $request->input("table");
             $order->token = $request->input("token");
             error_log($request->input("token"));
@@ -63,6 +61,12 @@ class OrderController extends Controller
 
         return response()->json(["msg" => "Unauthorized"], 401);
 
+    }
+
+    public function associateItemsToOrder($request, $order){
+        foreach ($request->input("items") as $key => $item){
+            $order->items()->attach($item, ["items_amount" => $request->input("quantities")[$key]]);
+        }
     }
 
     /**
