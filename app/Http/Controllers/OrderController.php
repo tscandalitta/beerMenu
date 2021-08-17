@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index()
     {
         if(in_array(request("state"), ["OPEN", "CLOSED"])){
+
             return response()->json(Order::where("state", request("state"))->get());
         }
         return response()->json(OrderResource::collection(Order::all()));
@@ -25,9 +26,10 @@ class OrderController extends Controller
     public function ordersByTable(Table $table)
     {
         if(request("token") == $table->token){
-            return response()->json(Order::where("token", request("token"))->get());
+            $orders_filtered = Order::where("token", request("token"))->get();
+            return response()->json(OrderResource::collection($orders_filtered));
         }
-        return response()->json(Order::all());
+        return response()->json(["msg" => "Unauthorized Request"], 401);
     }
 
     /**

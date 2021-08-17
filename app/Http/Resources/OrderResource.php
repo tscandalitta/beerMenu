@@ -14,12 +14,13 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        $items = new ItemResource($this->items, $this->id);
+        $items = ItemWithPivotResource::collection($this->items);
         return [
             'comments' => $this->comments,
             'state' => $this->state,
+            'table' => $this->table_id,
             'items' => $items,
-            'total' => $items->sum('price'),
+            'total' => $this->getTotal(),
             'created_at' => $this->created_at
         ];
     }
