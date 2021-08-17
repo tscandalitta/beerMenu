@@ -1861,6 +1861,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {},
   data: function data() {
@@ -1910,6 +1919,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     checkForNewOrders: function checkForNewOrders() {
+      this.sendRequest();
       setInterval(this.sendRequest, 10000);
     },
     sendRequest: function sendRequest() {
@@ -37490,32 +37500,55 @@ var render = function() {
       return _c(
         "div",
         { key: order.id, staticClass: "row justify-content-center" },
-        [_vm._m(0, true)]
+        [
+          _c("div", { staticClass: "col-md-8 mb-3" }, [
+            _c("div", { staticClass: "card" }, [
+              _c(
+                "div",
+                { staticClass: "card-header d-flex justify-content-between" },
+                [
+                  _c("h5", [
+                    _c("strong", [
+                      _vm._v(" Mesa " + _vm._s(order.table_id) + " ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("Pedido #" + _vm._s(order.id))])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "ul",
+                  _vm._l(order.items, function(item) {
+                    return _c("li", [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(item.amount) +
+                          " " +
+                          _vm._s(item.items) +
+                          "\n                        "
+                      )
+                    ])
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                order.comments ? _c("p", [_vm._v("Observaciones:")]) : _vm._e(),
+                _vm._v(" "),
+                _c("p", { staticClass: "card-text" }, [
+                  _vm._v(_vm._s(order.comments))
+                ])
+              ])
+            ])
+          ])
+        ]
       )
     }),
     0
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _vm._v("Example Component")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _vm._v(
-            "\n                    I'm an example component.\n                "
-          )
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

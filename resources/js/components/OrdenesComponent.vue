@@ -1,12 +1,21 @@
 <template>
     <div class="container">
         <div class="row justify-content-center" v-for="(order, index) in orders" v-bind:key="order.id">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-3">
                 <div class="card">
-                    <div class="card-header">Example Component</div>
+                    <div class="card-header d-flex justify-content-between">
+                        <h5><strong> Mesa {{ order.table_id }} </strong></h5>
+                        <p>Pedido #{{ order.id }}</p>
+                    </div>
 
                     <div class="card-body">
-                        I'm an example component.
+                        <ul>
+                            <li v-for="item in order.items">
+                                {{ item.amount }} {{ item.items }}
+                            </li>
+                        </ul>
+                        <p v-if="order.comments">Observaciones:</p>
+                        <p class="card-text">{{ order.comments }}</p>
                     </div>
                 </div>
             </div>
@@ -64,6 +73,7 @@
                 })
             },
             checkForNewOrders: function () {
+                this.sendRequest();
                 setInterval(this.sendRequest,10000);
             },
             sendRequest: function () {
