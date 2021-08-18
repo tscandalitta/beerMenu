@@ -1,38 +1,27 @@
 <template>
     <div class="container">
-        <div class="card-group col-sm-12 col-lg-6" v-for="(order, index) in orders" v-bind:key="order.id">
-
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between">
-                    <h5><strong> Mesa {{ order.table }} </strong></h5>
-                    <p>Pedido #{{ order.id }}</p>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-8">
-                            <ul>
-                                <li v-for="item in order.items">
-                                    {{ item.amount }} {{ item.name }}
-                                </li>
-                            </ul>
-                            <p v-if="order.comments">Observaciones:</p>
-                            <p class="card-text">{{ order.comments }}</p>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-success btn-block btn-sm m-1" title="Aceptar"
-                                    @click="acceptOrder(index)">
-                                <i class="fas fa-check mr-1"></i>Confirmar
-                            </button>
-                            <button class="btn btn-danger btn-block btn-sm m-1" title="Rechazar"
-                                    @click="showCommentsField(index)">
-                                <i class="fas fa-times mr-1"></i>Enviar comentario
-                            </button>
-                        </div>
+        <transition-group name="list-complete" tag="div" class="row">
+            <div class="card-group col-sm-12 col-lg-6 list-complete-item" v-for="(order, index) in orders" v-bind:key="order.id">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Mesa {{ order.table }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Pedido #{{ order.id }}</h6>
+                        <dl>
+                            <dd v-for="item in order.items">
+                                {{ item.amount }} x {{ item.name }}
+                            </dd>
+                        </dl>
+                        <template v-if="order.comments">
+                            <hr>
+                            <p class="card-text m-1" >Observaciones:</p>
+                            <p class="card-text m-1">{{ order.comments }}</p>
+                        </template>
+                        <button class="btn btn-success" @click="acceptOrder(index)">Aceptar</button>
+                        <button class="btn btn-sm btn-outline-danger">Rechazar</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition-group>
     </div>
 </template>
 

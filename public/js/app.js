@@ -1872,17 +1872,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {},
   data: function data() {
@@ -37506,94 +37495,90 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "container" },
-    _vm._l(_vm.orders, function(order, index) {
-      return _c(
-        "div",
-        { key: order.id, staticClass: "card-group col-sm-12 col-lg-6" },
-        [
-          _c("div", { staticClass: "card mb-3" }, [
-            _c(
-              "div",
-              { staticClass: "card-header d-flex justify-content-between" },
-              [
-                _c("h5", [
-                  _c("strong", [_vm._v(" Mesa " + _vm._s(order.table) + " ")])
-                ]),
-                _vm._v(" "),
-                _c("p", [_vm._v("Pedido #" + _vm._s(order.id))])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-8" }, [
-                  _c(
-                    "ul",
-                    _vm._l(order.items, function(item) {
-                      return _c("li", [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(item.amount) +
-                            " " +
-                            _vm._s(item.name) +
-                            "\n                            "
-                        )
-                      ])
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  order.comments
-                    ? _c("p", [_vm._v("Observaciones:")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "card-text" }, [
-                    _vm._v(_vm._s(order.comments))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-4" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success btn-block btn-sm m-1",
-                      attrs: { title: "Aceptar" },
-                      on: {
-                        click: function($event) {
-                          return _vm.acceptOrder(index)
+    [
+      _c(
+        "transition-group",
+        { staticClass: "row", attrs: { name: "list-complete", tag: "div" } },
+        _vm._l(_vm.orders, function(order, index) {
+          return _c(
+            "div",
+            {
+              key: order.id,
+              staticClass: "card-group col-sm-12 col-lg-6 list-complete-item"
+            },
+            [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c("h5", { staticClass: "card-title" }, [
+                      _vm._v("Mesa " + _vm._s(order.table))
+                    ]),
+                    _vm._v(" "),
+                    _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
+                      _vm._v("Pedido #" + _vm._s(order.id))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "dl",
+                      _vm._l(order.items, function(item) {
+                        return _c("dd", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(item.amount) +
+                              " x " +
+                              _vm._s(item.name) +
+                              "\n                        "
+                          )
+                        ])
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    order.comments
+                      ? [
+                          _c("hr"),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text m-1" }, [
+                            _vm._v("Observaciones:")
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text m-1" }, [
+                            _vm._v(_vm._s(order.comments))
+                          ])
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: {
+                          click: function($event) {
+                            return _vm.acceptOrder(index)
+                          }
                         }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-check mr-1" }),
-                      _vm._v("Confirmar\n                        ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger btn-block btn-sm m-1",
-                      attrs: { title: "Rechazar" },
-                      on: {
-                        click: function($event) {
-                          return _vm.showCommentsField(index)
-                        }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-times mr-1" }),
-                      _vm._v("Enviar comentario\n                        ")
-                    ]
-                  )
-                ])
+                      },
+                      [_vm._v("Aceptar")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-sm btn-outline-danger" },
+                      [_vm._v("Rechazar")]
+                    )
+                  ],
+                  2
+                )
               ])
-            ])
-          ])
-        ]
+            ]
+          )
+        }),
+        0
       )
-    }),
-    0
+    ],
+    1
   )
 }
 var staticRenderFns = []
