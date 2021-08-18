@@ -71,7 +71,7 @@
             },
             editOrder: function (orderId, orderState) {
                 axios
-                    .post(`/api/order/update/${orderId}`, null, {
+                    .put(`/api/orders/${orderId}`, null, {
                         params: {
                             state: orderState,
                         }
