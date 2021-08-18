@@ -1,22 +1,34 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center" v-for="(order, index) in orders" v-bind:key="order.id">
-            <div class="col-md-8 mb-3">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5><strong> Mesa {{ order.table_id }} </strong></h5>
-                        <p>Pedido #{{ order.id }}</p>
-                    </div>
+        <div class="card-group list-complete-item" v-for="(order, index) in orders" v-bind:key="order.id">
 
-                    <div class="card-body">
-                        <ul>
-                            <li v-for="item in order.items">
-                                {{ item.amount }} {{ item.items }}
-                            </li>
-                        </ul>
-                        <p v-if="order.comments">Observaciones:</p>
-                        <p class="card-text">{{ order.comments }}</p>
-                    </div>
+            <div class="card mb-3">
+                <div class="card-header d-flex justify-content-between">
+                    <h5><strong> Mesa {{ order.table }} </strong></h5>
+                    <p>Pedido #{{ order.id }}</p>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-8"></div>
+                            <ul>
+                                <li v-for="item in order.items">
+                                    {{ item.amount }} {{ item.name }}
+                                </li>
+                            </ul>
+                            <p v-if="order.comments">Observaciones:</p>
+                            <p class="card-text">{{ order.comments }}</p>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-success btn-sm" title="Aceptar"
+                                    @click="acceptOrder(index)">
+                                <i class="fas fa-check mr-1"></i>Confirmar
+                            </button>
+                            <button class="btn btn-danger btn-sm" title="Rechazar"
+                                    @click="showCommentsField(index)">
+                                <i class="fas fa-times mr-1"></i>Enviar comentario
+                            </button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -63,12 +75,13 @@
                             state: orderState,
                         }
                     })
-                    .catch(error => console.error());
+                    .catch(error => console.error(error));
             },
             openModal: function () {
                 $('#commentsTextArea').val('');
-                $('#commentsModal').modal('show');
-                $('#commentsModal').on('shown.bs.modal', function () {
+                $('#commentsModal')
+                    .modal('show')
+                    .on('shown.bs.modal', function () {
                     $('#commentsTextArea').focus();
                 })
             },
