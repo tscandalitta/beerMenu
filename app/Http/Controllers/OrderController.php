@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         if(in_array(request("state"), ["OPEN", "CLOSED"])){
 
-            return response()->json(Order::where("state", request("state"))->get());
+            return response()->json(OrderResource::collection(Order::where("state", request("state"))->get()));
         }
         return response()->json(OrderResource::collection(Order::all()));
     }
