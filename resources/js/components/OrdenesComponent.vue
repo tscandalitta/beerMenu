@@ -71,10 +71,8 @@
             },
             editOrder: function (orderId, orderState) {
                 axios
-                    .put(`/api/orders/${orderId}`, null, {
-                        params: {
-                            state: orderState,
-                        }
+                    .put(`/api/orders/${orderId}`, {
+                        state: orderState,
                     })
                     .catch(error => console.error(error));
             },

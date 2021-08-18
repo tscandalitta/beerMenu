@@ -1916,10 +1916,8 @@ __webpack_require__.r(__webpack_exports__);
       this.editOrder(orderId, 'REJECTED');
     },
     editOrder: function editOrder(orderId, orderState) {
-      axios.put("/api/orders/".concat(orderId), null, {
-        params: {
-          state: orderState
-        }
+      axios.put("/api/orders/".concat(orderId), {
+        state: orderState
       })["catch"](function (error) {
         return console.error(error);
       });
