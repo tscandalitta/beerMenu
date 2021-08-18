@@ -16,6 +16,7 @@ class OrderResource extends JsonResource
     {
         $items = ItemWithPivotResource::collection($this->items);
         return [
+            'id' => $this->id,
             'comments' => $this->comments,
             'state' => $this->state,
             'table' => $this->table_id,
