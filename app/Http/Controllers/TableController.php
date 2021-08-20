@@ -17,6 +17,14 @@ class TableController extends Controller
         return response()->json(Table::all(), 200);
     }
 
+    public function showTables()
+    {
+        //TODO: asociar mesas y qrs
+        $tables = [];
+
+        return view('tables.tables', compact($tables));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
