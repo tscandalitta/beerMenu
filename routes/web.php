@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,11 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/orders/real_time', function () {
-    return view('orders.realtime');
-});
-
+Route::get('/orders/real_time', [OrderController::class, 'realTime']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

@@ -115,4 +115,8 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function realTime() {
+        return view('orders.realtime');
+    }
 }
