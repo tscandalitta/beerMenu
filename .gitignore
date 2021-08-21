@@ -13,8 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-npm-debug.log
-yarn-error.log
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -26,6 +24,5 @@ public_html/hot
 
 storage/*.key
 /.vagrant
-.phpunit.result.cache
 
 db.sqlite
