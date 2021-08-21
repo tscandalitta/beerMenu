@@ -17,6 +17,13 @@ class TableController extends Controller
         return response()->json(Table::all(), 200);
     }
 
+    public function showTables()
+    {
+        $tables = Table::all();
+
+        return view('tables.tables', compact('tables'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
