@@ -56,6 +56,7 @@ class OrderController extends Controller
             $this->associateItemsToOrder($request, $order);
             $order->table_id = $request->input("table");
             $order->token = $request->input("token");
+            $order->comments = $request->input("comments");
             $order->save();
             return response()->json($order);
         }
