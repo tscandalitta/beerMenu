@@ -19,10 +19,9 @@ class TableController extends Controller
 
     public function showTables()
     {
-        //TODO: asociar mesas y qrs
-        $tables = [];
+        $tables = Table::all();
 
-        return view('tables.tables', compact($tables));
+        return view('tables.tables', compact('tables'));
     }
 
     /**
