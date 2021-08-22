@@ -1,9 +1,15 @@
 <template>
     <div class="container">
-        <select v-model="selectedTable">
-            <option v-for="mesa in mesas" :value="mesa.id" >Mesa {{ mesa.number }}</option>
-        </select>
-        <span v-html="qrCodeHTML"></span>
+        <div class="form-row mb-3 d-flex justify-content-center">
+            <div class="col"></div>
+            <select class="form-control" v-model="selectedTable" style="width: 100%">
+                <option v-for="mesa in mesas" :value="mesa.id" >Mesa {{ mesa.number }}</option>
+            </select>
+        </div>
+        <div class="form-row d-flex justify-content-center">
+
+            <span v-html="qrCodeHTML"></span>
+        </div>
     </div>
 </template>
 

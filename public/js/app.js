@@ -1962,6 +1962,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     tables: {
@@ -37748,42 +37754,50 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c(
-      "select",
-      {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.selectedTable,
-            expression: "selectedTable"
+    _c("div", { staticClass: "form-row mb-3 d-flex justify-content-center" }, [
+      _c("div", { staticClass: "col" }),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedTable,
+              expression: "selectedTable"
+            }
+          ],
+          staticClass: "form-control",
+          staticStyle: { width: "100%" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedTable = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
           }
-        ],
-        on: {
-          change: function($event) {
-            var $$selectedVal = Array.prototype.filter
-              .call($event.target.options, function(o) {
-                return o.selected
-              })
-              .map(function(o) {
-                var val = "_value" in o ? o._value : o.value
-                return val
-              })
-            _vm.selectedTable = $event.target.multiple
-              ? $$selectedVal
-              : $$selectedVal[0]
-          }
-        }
-      },
-      _vm._l(_vm.mesas, function(mesa) {
-        return _c("option", { domProps: { value: mesa.id } }, [
-          _vm._v("Mesa " + _vm._s(mesa.number))
-        ])
-      }),
-      0
-    ),
+        },
+        _vm._l(_vm.mesas, function(mesa) {
+          return _c("option", { domProps: { value: mesa.id } }, [
+            _vm._v("Mesa " + _vm._s(mesa.number))
+          ])
+        }),
+        0
+      )
+    ]),
     _vm._v(" "),
-    _c("span", { domProps: { innerHTML: _vm._s(_vm.qrCodeHTML) } })
+    _c("div", { staticClass: "form-row d-flex justify-content-center" }, [
+      _c("span", { domProps: { innerHTML: _vm._s(_vm.qrCodeHTML) } })
+    ])
   ])
 }
 var staticRenderFns = []
