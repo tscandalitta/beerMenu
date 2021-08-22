@@ -2000,7 +2000,7 @@ __webpack_require__.r(__webpack_exports__);
     sendPost: function sendPost(id, token) {
       var _this = this;
 
-      axios.post("/tables/".concat(id), {
+      axios.post("/api/tables/".concat(id), {
         token: token
       }).then(function (response) {
         _this.updateQRCode();

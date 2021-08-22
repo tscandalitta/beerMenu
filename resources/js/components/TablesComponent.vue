@@ -45,7 +45,7 @@ export default {
         },
         sendPost: function (id, token) {
             axios
-                .post(`/tables/${id}`, {
+                .post(`/api/tables/${id}`, {
                     token: token,
                 })
                 .then(response => {
