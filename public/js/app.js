@@ -1993,7 +1993,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    refreshQR: function refreshQR() {//    TODO: cambiar token de la mesa
+    refreshQR: function refreshQR() {
+      //    TODO: cambiar token de la mesa
+      this.sendPost(this.selectedTable, this.getToken(this.selectedTable));
+    },
+    sendPost: function sendPost(id, token) {
+      var _this = this;
+
+      axios.post("/tables/".concat(id), {
+        token: token
+      }).then(function (response) {
+        _this.updateQRCode();
+      })["catch"](function (error) {
+        return console.error(error);
+      });
     },
     updateQRCode: function updateQRCode() {
       this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
@@ -2005,7 +2018,7 @@ __webpack_require__.r(__webpack_exports__);
       return mesa !== undefined ? mesa['token'] : null;
     },
     sendRequest: function sendRequest(id, token) {
-      var _this = this;
+      var _this2 = this;
 
       this.opacity = 0.3;
       this.disabledButton = true;
@@ -2015,9 +2028,9 @@ __webpack_require__.r(__webpack_exports__);
           token: token
         }
       }).then(function (response) {
-        _this.qrCodeHTML = response['data'];
-        _this.opacity = 1;
-        _this.disabledButton = false;
+        _this2.qrCodeHTML = response['data'];
+        _this2.opacity = 1;
+        _this2.disabledButton = false;
       })["catch"](function (error) {
         return console.error(error);
       });

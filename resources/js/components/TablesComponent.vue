@@ -41,6 +41,17 @@ export default {
     methods: {
         refreshQR: function () {
         //    TODO: cambiar token de la mesa
+            this.sendPost(this.selectedTable, this.getToken(this.selectedTable));
+        },
+        sendPost: function (id, token) {
+            axios
+                .post(`/tables/${id}`, {
+                    token: token,
+                })
+                .then(response => {
+                    this.updateQRCode();
+                })
+                .catch(error => console.error(error));
         },
         updateQRCode: function () {
             this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
