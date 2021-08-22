@@ -17,6 +17,7 @@ class CreateTablesTable extends Migration
             $table->id();
             $table->unsignedInteger("number")->unique();
             $table->string('token', 20)->unique();
+            $table->timestamps();
         });
     }
 

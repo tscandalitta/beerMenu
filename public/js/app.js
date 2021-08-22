@@ -1994,22 +1994,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     refreshQR: function refreshQR() {
-      //    TODO: cambiar token de la mesa
-      this.sendPost(this.selectedTable, this.getToken(this.selectedTable));
+      this.sendPost(this.selectedTable);
     },
-    sendPost: function sendPost(id, token) {
+    sendPost: function sendPost(id) {
       var _this = this;
 
-      axios.post("/api/tables/".concat(id), {
-        token: token
+      axios.post("/api/tables/".concat(id), {//TODO: enviar bearer para autenticar
       }).then(function (response) {
         _this.updateQRCode();
       })["catch"](function (error) {
         return console.error(error);
       });
-    },
-    updateQRCode: function updateQRCode() {
-      this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
     },
     getToken: function getToken(tableId) {
       var mesa = this.mesas.find(function (table) {
@@ -2017,15 +2012,17 @@ __webpack_require__.r(__webpack_exports__);
       });
       return mesa !== undefined ? mesa['token'] : null;
     },
-    sendRequest: function sendRequest(id, token) {
+    updateQRCode: function updateQRCode() {
+      this.sendRequest(this.selectedTable);
+    },
+    sendRequest: function sendRequest(id) {
       var _this2 = this;
 
       this.opacity = 0.3;
       this.disabledButton = true;
-      axios.get('/qrcode', {
+      axios.get('/api/qrcode', {
         params: {
-          id: id,
-          token: token
+          table: id
         }
       }).then(function (response) {
         _this2.qrCodeHTML = response['data'];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TableController extends Controller
 {
@@ -47,11 +48,18 @@ class TableController extends Controller
         return response()->json($table);
     }
 
+    //TODO: mover a api.php y chequear bearer token
     public function close(Table $table)
     {
-        $table->token = Str::random(20);
+        $table->token = Str::random(20);;
         $table->save();
-        return response()->json($table);
+    }
+
+    public function generateQR()
+    {
+        $table = Table::find(request('table'));
+        return QrCode::size(300)
+            ->generate(env('APP_URL') . '/?table=' . $table->id . '&token=' . $table->token);
     }
 
     /**

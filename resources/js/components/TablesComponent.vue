@@ -40,34 +40,32 @@ export default {
     },
     methods: {
         refreshQR: function () {
-        //    TODO: cambiar token de la mesa
-            this.sendPost(this.selectedTable, this.getToken(this.selectedTable));
+            this.sendPost(this.selectedTable);
         },
-        sendPost: function (id, token) {
+        sendPost: function (id) {
             axios
                 .post(`/api/tables/${id}`, {
-                    token: token,
+                    //TODO: enviar bearer para autenticar
                 })
                 .then(response => {
                     this.updateQRCode();
                 })
                 .catch(error => console.error(error));
         },
-        updateQRCode: function () {
-            this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
-        },
         getToken: function (tableId) {
             const mesa = this.mesas.find(table => table['id'] === tableId);
             return (mesa !== undefined) ? mesa['token'] : null;
         },
-        sendRequest: function (id, token) {
+        updateQRCode: function () {
+            this.sendRequest(this.selectedTable);
+        },
+        sendRequest: function (id) {
             this.opacity = 0.3;
             this.disabledButton = true;
             axios
-                .get('/qrcode', {
+                .get('/api/qrcode', {
                     params: {
-                        id: id,
-                        token: token
+                        table: id
                     }
                 })
                 .then(response => {
