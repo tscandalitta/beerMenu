@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TableController extends Controller
 {
@@ -42,8 +43,15 @@ class TableController extends Controller
      */
     public function store(Request $request)
     {
-        $item = Table::create($request->all());
-        return response()->json($item, 200);
+        $table = Table::create($request->all());
+        return response()->json($table);
+    }
+
+    public function close(Table $table)
+    {
+        $table->token = Str::random(20);
+        $table->save();
+        return response()->json($table);
     }
 
     /**
