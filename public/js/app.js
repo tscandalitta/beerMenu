@@ -1968,6 +1968,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     tables: {
@@ -37754,7 +37756,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "form-row mb-3 d-flex justify-content-center" }, [
+    _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
       _c("div", { staticClass: "col" }),
       _vm._v(" "),
       _c(
@@ -37795,12 +37797,29 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-row d-flex justify-content-center" }, [
+    _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
       _c("span", { domProps: { innerHTML: _vm._s(_vm.qrCodeHTML) } })
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-row d-flex justify-content-center" },
+      [
+        _c("button", { staticClass: "btn btn-sm btn-danger" }, [
+          _vm._v("Refrescar QR")
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
