@@ -22,10 +22,6 @@ Route::get('/orders/real_time', [OrderController::class, 'realTime']);
 
 Route::get('/tables', [TableController::class,'showTables']);
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-
-
 Auth::routes();
 
 Route::get('/', function () {
