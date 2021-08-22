@@ -10,7 +10,9 @@
             <span v-html="qrCodeHTML" v-bind:style="{opacity: opacity}"></span>
         </div>
         <div class="form-row d-flex justify-content-center">
-            <button class="btn btn-sm btn-danger" :disabled="disabledButton">Refrescar QR</button>
+            <button class="btn btn-sm btn-danger" @click="() => refreshQR()" :disabled="disabledButton">
+                Refrescar QR
+            </button>
         </div>
     </div>
 </template>
@@ -37,12 +39,15 @@ export default {
       }
     },
     methods: {
+        refreshQR: function () {
+        //    TODO: cambiar token de la mesa
+        },
         updateQRCode: function () {
             this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
         },
         getToken: function (tableId) {
-            const mesa = this.mesas.filter(table => table['id'] === tableId);
-            return (mesa[0] !== undefined) ? mesa[0]['token'] : null;
+            const mesa = this.mesas.find(table => table['id'] === tableId);
+            return (mesa !== undefined) ? mesa['token'] : null;
         },
         sendRequest: function (id, token) {
             this.opacity = 0.3;

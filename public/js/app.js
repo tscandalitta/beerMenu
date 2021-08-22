@@ -1970,6 +1970,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     tables: {
@@ -1991,14 +1993,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    refreshQR: function refreshQR() {//    TODO: cambiar token de la mesa
+    },
     updateQRCode: function updateQRCode() {
       this.sendRequest(this.selectedTable, this.getToken(this.selectedTable));
     },
     getToken: function getToken(tableId) {
-      var mesa = this.mesas.filter(function (table) {
+      var mesa = this.mesas.find(function (table) {
         return table['id'] === tableId;
       });
-      return mesa[0] !== undefined ? mesa[0]['token'] : null;
+      return mesa !== undefined ? mesa['token'] : null;
     },
     sendRequest: function sendRequest(id, token) {
       var _this = this;
@@ -37815,9 +37819,14 @@ var render = function() {
         "button",
         {
           staticClass: "btn btn-sm btn-danger",
-          attrs: { disabled: _vm.disabledButton }
+          attrs: { disabled: _vm.disabledButton },
+          on: {
+            click: function() {
+              return _vm.refreshQR()
+            }
+          }
         },
-        [_vm._v("Refrescar QR")]
+        [_vm._v("\n            Refrescar QR\n        ")]
       )
     ])
   ])
