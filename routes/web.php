@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,11 @@ Route::get('/orders/real_time', [OrderController::class, 'realTime']);
 Route::get('/tables', [TableController::class,'showTables']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/qrcode', function () {
+    return QrCode::size(300)
+        ->generate(env('APP_URL') . '/?table=' . request('id') . '&token=' . request('token'));
+});
 
 Auth::routes();
 
