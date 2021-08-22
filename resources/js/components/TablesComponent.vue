@@ -7,10 +7,10 @@
             </select>
         </div>
         <div class="form-row mb-4 d-flex justify-content-center">
-            <span v-html="qrCodeHTML"></span>
+            <span v-html="qrCodeHTML" v-bind:style="{opacity: opacity}"></span>
         </div>
         <div class="form-row d-flex justify-content-center">
-            <button class="btn btn-sm btn-danger">Refrescar QR</button>
+            <button class="btn btn-sm btn-danger" :disabled="disabledButton">Refrescar QR</button>
         </div>
     </div>
 </template>
@@ -27,6 +27,8 @@ export default {
             mesas: JSON.parse(this.tables),
             qrCodeHTML: '',
             selectedTable: 1,
+            opacity: 0.3,
+            disabledButton: false,
         }
     },
     watch: {
@@ -43,6 +45,8 @@ export default {
             return (mesa[0] !== undefined) ? mesa[0]['token'] : null;
         },
         sendRequest: function (id, token) {
+            this.opacity = 0.3;
+            this.disabledButton = true;
             axios
                 .get('/qrcode', {
                     params: {
@@ -52,6 +56,8 @@ export default {
                 })
                 .then(response => {
                     this.qrCodeHTML = response['data'];
+                    this.opacity = 1;
+                    this.disabledButton = false;
                 })
                 .catch(error => console.error(error));
         },

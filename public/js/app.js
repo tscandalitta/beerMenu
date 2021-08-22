@@ -1980,7 +1980,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       mesas: JSON.parse(this.tables),
       qrCodeHTML: '',
-      selectedTable: 1
+      selectedTable: 1,
+      opacity: 0.3,
+      disabledButton: false
     };
   },
   watch: {
@@ -2001,6 +2003,8 @@ __webpack_require__.r(__webpack_exports__);
     sendRequest: function sendRequest(id, token) {
       var _this = this;
 
+      this.opacity = 0.3;
+      this.disabledButton = true;
       axios.get('/qrcode', {
         params: {
           id: id,
@@ -2008,6 +2012,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this.qrCodeHTML = response['data'];
+        _this.opacity = 1;
+        _this.disabledButton = false;
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -37798,28 +37804,25 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
-      _c("span", { domProps: { innerHTML: _vm._s(_vm.qrCodeHTML) } })
+      _c("span", {
+        style: { opacity: _vm.opacity },
+        domProps: { innerHTML: _vm._s(_vm.qrCodeHTML) }
+      })
     ]),
     _vm._v(" "),
-    _vm._m(0)
+    _c("div", { staticClass: "form-row d-flex justify-content-center" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm btn-danger",
+          attrs: { disabled: _vm.disabledButton }
+        },
+        [_vm._v("Refrescar QR")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-row d-flex justify-content-center" },
-      [
-        _c("button", { staticClass: "btn btn-sm btn-danger" }, [
-          _vm._v("Refrescar QR")
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
