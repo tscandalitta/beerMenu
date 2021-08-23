@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAtentionRequestsTable extends Migration
+class CreateAttentionRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAtentionRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('atention_requests', function (Blueprint $table) {
+        Schema::create('attention_requests', function (Blueprint $table) {
             $table->id();
             $table->foreign('table_id')->references('id')->on('tables');
             $table->enum('type', ['BILL', 'WAITER']);
@@ -29,6 +29,6 @@ class CreateAtentionRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('atention_requests');
+        Schema::dropIfExists('attention_requests');
     }
 }

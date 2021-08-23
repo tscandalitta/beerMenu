@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AtentionRequest;
+use App\Models\AttentionRequest;
 use App\Models\Order;
 use App\Models\Table;
 
-class AtentionRequestController extends Controller
+class AttentionRequestController extends Controller
 {
     public function index()
     {
-        return response()->json(AtentionRequest::all());
+        return response()->json(AttentionRequest::all());
     }
 
     public function store()
     {
         $table = Table::find(request("table"));
         if($table->token == request("token")) {
-            $atentionRequest = AtentionRequest::create([
+            $attentionRequest = AttentionRequest::create([
                 'table_id' => $table->id,
                 'type' => request('type'),
                 'comments' => request('comments'),
             ]);
-            $atentionRequest->save();
-            return response()->json($atentionRequest);
+            $attentionRequest->save();
+            return response()->json($attentionRequest);
         }
         return response()->json(["msg" => "Unauthorized"], 401);
 
