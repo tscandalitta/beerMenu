@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AtentionRequestController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TableController;
@@ -31,4 +32,5 @@ Route::middleware('api')->post('/tables/{table}', [TableController::class,'close
 
 Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
 
+Route::middleware('api')->get('/atention_requests', [AtentionRequestController::class,'index']);
 
