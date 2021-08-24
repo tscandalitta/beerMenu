@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTablesTable extends Migration
+class CreateAttentionRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateTablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tables', function (Blueprint $table) {
+        Schema::create('attention_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("number")->unique();
-            $table->string('token', 20)->unique();
+            $table->integer('table_id')->unsigned()->index()->nullable();
+            $table->foreign('table_id')->references('id')->on('tables');
+            $table->enum('type', ['BILL', 'WAITER']);
+            $table->char('comments');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateTablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('attention_requests');
     }
 }

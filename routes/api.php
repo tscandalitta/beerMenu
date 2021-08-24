@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttentionRequestController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TableController;
@@ -27,5 +28,10 @@ Route::middleware('api')->get('/orders/table/{table}', [OrderController::class,'
 
 Route::middleware('api')->get('/tables', [TableController::class,'index']);
 Route::middleware('api')->post('/tables', [TableController::class,'store']);
+Route::middleware('api')->post('/tables/{table}', [TableController::class,'close']);
 
+Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
+
+Route::middleware('api')->get('/attention_requests', [AttentionRequestController::class,'index']);
+Route::middleware('api')->post('/attention_requests', [AttentionRequestController::class,'store']);
 

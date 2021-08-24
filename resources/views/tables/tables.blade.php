@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
+@section('title','Códigos QR')
+
 @section('content')
-    @foreach($tables as $table)
-        {!! QrCode::size(300)->generate('https://maxituyhorus.com/?table_id=' . $table->id . '&token=' . $table->token); !!}
-    @endforeach
-
+    <tables tables={{ $tables }}></tables>
 @endsection
-
