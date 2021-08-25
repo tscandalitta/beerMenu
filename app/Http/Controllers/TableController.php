@@ -59,7 +59,7 @@ class TableController extends Controller
     {
         $table = Table::find(request('table'));
         return QrCode::size(300)
-            ->generate(env('APP_URL') . '/?table=' . $table->id . '&token=' . $table->token);
+            ->generate(env('MENU_APP_URL') . '/?table=' . $table->id . '&token=' . $table->token);
     }
 
     /**
