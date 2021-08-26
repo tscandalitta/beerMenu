@@ -21,7 +21,7 @@ class TableController extends Controller
 
     public function showTables()
     {
-        $tables = Table::orderBy('id','ASC')->get();
+        $tables = Table::orderBy('number','ASC')->get();
 
 
         return view('tables.tables', compact('tables'));
