@@ -36,4 +36,4 @@ jobs:
     - name: compile vue components
       run: npm install && npm run dev
     - name: Git deploy to Heroku
-      run: git status && git commit -m 'compile vue components' && git push
+      run: git status && git add . && git commit -m 'compile vue components' && git push
