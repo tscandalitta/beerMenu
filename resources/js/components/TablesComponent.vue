@@ -11,7 +11,7 @@
         </div>
         <div class="form-row d-flex justify-content-center">
             <button class="btn btn-sm btn-danger" @click="() => refreshQR()" :disabled="disabledButton">
-                Refrescar QR
+                Cerrar mesa
             </button>
         </div>
     </div>
