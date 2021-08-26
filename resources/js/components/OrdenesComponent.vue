@@ -32,6 +32,7 @@
             return {
                 orderToDismiss: null,
                 orders: [],
+                attention_requests: [],
             }
         },
         methods: {
@@ -73,11 +74,11 @@
                     $('#commentsTextArea').focus();
                 })
             },
-            checkForNewOrders: function () {
-                this.sendRequest();
-                setInterval(this.sendRequest,10000);
+            retrieveData: function () {
+                setInterval(this.checkForNewOrders(),10000);
+                setInterval(this.checkForNewAttentionRequests(),10000);
             },
-            sendRequest: function () {
+            checkForNewOrders: function () {
                 axios
                     .get('/api/orders', {
                         params: {
@@ -87,11 +88,19 @@
                     .then(response => {
                         this.orders = response['data'];
                     })
+                    .catch(error => console.error(error));;
+            },
+            checkForNewAttentionRequests: function () {
+                axios
+                    .get('/api/attention_requests')
+                    .then(response => {
+                        this.attention_requests = response['data'];
+                    })
                     .catch(error => console.error(error));
             },
         },
         mounted() {
-            this.checkForNewOrders();
+            this.retrieveData();
         }
     }
 </script>
