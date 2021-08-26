@@ -41,11 +41,11 @@ jobs:
       uses: onekiloparsec/heroku-node-deploy-subfolder@v1.1.0
       with:
         # Your Heroku API key. This will be used for authentication. You can find it in your Heroku account settings
-        api-key: 0c0ebac2-cfc6-486a-b322-f1302c851bc
+        api_key: 0c0ebac2-cfc6-486a-b322-f1302c851bc
         # The email of your Heroku account (needed for auth).
         email: tscandalitta@gmail.com
         # The app name to use for deploying/updating
-        app-name: beermenu
+        app_name: beermenu
         # The Heroku branch name that you would like to deploy to (`master` or `main`).
         heroku_branch: master
         # The subfolder where your built code is sitted, e.g. `dist`.
