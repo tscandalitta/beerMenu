@@ -17,7 +17,7 @@
                             <p class="card-text m-1">{{ order.comments }}</p>
                         </template>
                         <button class="btn btn-success" @click="acceptOrder(index)">Aceptar</button>
-                        <button class="btn btn-sm btn-outline-danger">Rechazar</button>
+                        <button class="btn btn-sm btn-outline-danger" @click="rejectOrder(index)">Rechazar</button>
                     </div>
                 </div>
             </div>
@@ -41,16 +41,14 @@
                 this.orderToDismiss = index;
                 this.dismissOrder();
             },
-            showCommentsField: function (index) {
+            rejectOrder: function (index) {
+                this.saveRejectedOrder(this.orders[index].id);
                 this.orderToDismiss = index;
-                this.openModal();
-            },
-            rejectOrder: function () {
-                this.saveRejectedOrder(this.orders[this.orderToDismiss].id);
                 this.dismissOrder();
             },
             dismissOrder: function () {
                 this.orders.splice(this.orderToDismiss, 1);
+                
                 this.orderToDismiss = null;
             },
             saveConfirmedOrder: function (orderId) {
