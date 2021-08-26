@@ -1877,7 +1877,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       orderToDismiss: null,
-      orders: []
+      orders: [],
+      attention_requests: []
     };
   },
   methods: {
@@ -1886,12 +1887,9 @@ __webpack_require__.r(__webpack_exports__);
       this.orderToDismiss = index;
       this.dismissOrder();
     },
-    showCommentsField: function showCommentsField(index) {
+    rejectOrder: function rejectOrder(index) {
+      this.saveRejectedOrder(this.orders[index].id);
       this.orderToDismiss = index;
-      this.openModal();
-    },
-    rejectOrder: function rejectOrder() {
-      this.saveRejectedOrder(this.orders[this.orderToDismiss].id);
       this.dismissOrder();
     },
     dismissOrder: function dismissOrder() {
@@ -1917,11 +1915,11 @@ __webpack_require__.r(__webpack_exports__);
         $('#commentsTextArea').focus();
       });
     },
-    checkForNewOrders: function checkForNewOrders() {
-      this.sendRequest();
-      setInterval(this.sendRequest, 10000);
+    retrieveData: function retrieveData() {
+      setInterval(this.checkForNewOrders(), 10000);
+      setInterval(this.checkForNewAttentionRequests(), 10000);
     },
-    sendRequest: function sendRequest() {
+    checkForNewOrders: function checkForNewOrders() {
       var _this = this;
 
       axios.get('/api/orders', {
@@ -1933,10 +1931,20 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.error(error);
       });
+      ;
+    },
+    checkForNewAttentionRequests: function checkForNewAttentionRequests() {
+      var _this2 = this;
+
+      axios.get('/api/attention_requests').then(function (response) {
+        _this2.attention_requests = response['data'];
+      })["catch"](function (error) {
+        return console.error(error);
+      });
     }
   },
   mounted: function mounted() {
-    this.checkForNewOrders();
+    this.retrieveData();
   }
 });
 
@@ -37736,7 +37744,14 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "button",
-                      { staticClass: "btn btn-sm btn-outline-danger" },
+                      {
+                        staticClass: "btn btn-sm btn-outline-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.rejectOrder(index)
+                          }
+                        }
+                      },
                       [_vm._v("Rechazar")]
                     )
                   ],
@@ -37836,7 +37851,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n            Refrescar QR\n        ")]
+        [_vm._v("\n            Cerrar mesa\n        ")]
       )
     ])
   ])
