@@ -70,9 +70,9 @@ export default {
                     //TODO: enviar bearer para autenticar
                 })
                 .then(response => {
+                    this.updateQRCode();
                 })
                 .catch(error => console.error(error));
-            this.updateQRCode();
         },
         showDialogue: function () {
             $('#confirmDialogue').modal('show');
