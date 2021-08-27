@@ -67,7 +67,7 @@ export default {
         sendPost: function (id) {
             axios
                 .post(`/api/tables/${id}`, {
-                    //TODO: enviar bearer para autenticar
+                    //TODO: enviar bearer
                 })
                 .then(response => {
                 })
