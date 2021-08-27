@@ -9,7 +9,8 @@
         "prod": "npm run production",
         "production": "mix --production",
         "build": "npm run production",
-        "postinstall": "npm run production"
+        "postinstall": "npm run production",
+        "heroku-postbuild": "npm run prod"
     },
     "devDependencies": {
         "axios": "^0.21",
