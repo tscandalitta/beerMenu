@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/orders/real_time', [OrderController::class, 'realTime']);
 
 Route::get('/tables', [TableController::class,'showTables']);
-Route::get('items', [HomeController::class, 'listItems'])->name('list-items');
+Route::get('/items', [HomeController::class, 'listItems'])->name('list-items');
 Auth::routes();
 
 Route::get('/', function () {
