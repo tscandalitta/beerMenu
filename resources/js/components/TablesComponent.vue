@@ -69,7 +69,7 @@ export default {
                 .post(`/api/tables/${id}`, {
                     //TODO: enviar bearer para autenticar
                 })
-                .then(function() {
+                .then(response => {
                     this.updateQRCode();
                 })
                 .catch(error => console.error(error));
