@@ -16,7 +16,7 @@ class TableController extends Controller
      */
     public function index()
     {
-        return response()->json(Table::all(), 200);
+        return response()->json(Table::all());
     }
 
     public function showTables()
