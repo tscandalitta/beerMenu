@@ -15,4 +15,8 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+
+    public function listItems(){
+        return view('items.list_items');
+    }
 }
