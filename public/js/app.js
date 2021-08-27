@@ -1877,7 +1877,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       orderToDismiss: null,
-      orders: []
+      orders: [],
+      attention_requests: []
     };
   },
   methods: {
@@ -1886,12 +1887,9 @@ __webpack_require__.r(__webpack_exports__);
       this.orderToDismiss = index;
       this.dismissOrder();
     },
-    showCommentsField: function showCommentsField(index) {
+    rejectOrder: function rejectOrder(index) {
+      this.saveRejectedOrder(this.orders[index].id);
       this.orderToDismiss = index;
-      this.openModal();
-    },
-    rejectOrder: function rejectOrder() {
-      this.saveRejectedOrder(this.orders[this.orderToDismiss].id);
       this.dismissOrder();
     },
     dismissOrder: function dismissOrder() {
@@ -1917,11 +1915,11 @@ __webpack_require__.r(__webpack_exports__);
         $('#commentsTextArea').focus();
       });
     },
-    checkForNewOrders: function checkForNewOrders() {
-      this.sendRequest();
-      setInterval(this.sendRequest, 10000);
+    retrieveData: function retrieveData() {
+      setInterval(this.checkForNewOrders(), 10000);
+      setInterval(this.checkForNewAttentionRequests(), 10000);
     },
-    sendRequest: function sendRequest() {
+    checkForNewOrders: function checkForNewOrders() {
       var _this = this;
 
       axios.get('/api/orders', {
@@ -1933,10 +1931,20 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.error(error);
       });
+      ;
+    },
+    checkForNewAttentionRequests: function checkForNewAttentionRequests() {
+      var _this2 = this;
+
+      axios.get('/api/attention_requests').then(function (response) {
+        _this2.attention_requests = response['data'];
+      })["catch"](function (error) {
+        return console.error(error);
+      });
     }
   },
   mounted: function mounted() {
-    this.checkForNewOrders();
+    this.retrieveData();
   }
 });
 
@@ -1953,6 +1961,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1997,14 +2026,15 @@ __webpack_require__.r(__webpack_exports__);
       this.sendPost(this.selectedTable);
     },
     sendPost: function sendPost(id) {
-      var _this = this;
-
       axios.post("/api/tables/".concat(id), {//TODO: enviar bearer para autenticar
-      }).then(function (response) {
-        _this.updateQRCode();
+      }).then(function () {
+        this.updateQRCode();
       })["catch"](function (error) {
         return console.error(error);
       });
+    },
+    showDialogue: function showDialogue() {
+      $('#confirmDialogue').modal('show');
     },
     getToken: function getToken(tableId) {
       var mesa = this.mesas.find(function (table) {
@@ -2016,7 +2046,7 @@ __webpack_require__.r(__webpack_exports__);
       this.sendRequest(this.selectedTable);
     },
     sendRequest: function sendRequest(id) {
-      var _this2 = this;
+      var _this = this;
 
       this.opacity = 0.3;
       this.disabledButton = true;
@@ -2025,9 +2055,9 @@ __webpack_require__.r(__webpack_exports__);
           table: id
         }
       }).then(function (response) {
-        _this2.qrCodeHTML = response['data'];
-        _this2.opacity = 1;
-        _this2.disabledButton = false;
+        _this.qrCodeHTML = response['data'];
+        _this.opacity = 1;
+        _this.disabledButton = false;
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -37736,7 +37766,14 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "button",
-                      { staticClass: "btn btn-sm btn-outline-danger" },
+                      {
+                        staticClass: "btn btn-sm btn-outline-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.rejectOrder(index)
+                          }
+                        }
+                      },
                       [_vm._v("Rechazar")]
                     )
                   ],
@@ -37776,6 +37813,84 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "confirmDialogue",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "modalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "p",
+                  {
+                    staticClass: "m-0 modal-title",
+                    staticStyle: {
+                      "font-size": "1.3em",
+                      "font-weight": "bolder"
+                    },
+                    attrs: { id: "modalLabel" }
+                  },
+                  [
+                    _c("strong", [
+                      _vm._v("Cerrar mesa " + _vm._s(_vm.selectedTable))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [
+                  _vm._v("¿Seguro que desea cerrar la "),
+                  _c("strong", [_vm._v("MESA " + _vm._s(_vm.selectedTable))]),
+                  _vm._v("?")
+                ]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Los comensales no podrán seguir pidiendo.")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-danger",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: { click: _vm.refreshQR }
+                  },
+                  [_vm._v("Cerrar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancelar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
       _c("div", { staticClass: "col" }),
       _vm._v(" "),
@@ -37830,18 +37945,32 @@ var render = function() {
         {
           staticClass: "btn btn-sm btn-danger",
           attrs: { disabled: _vm.disabledButton },
-          on: {
-            click: function() {
-              return _vm.refreshQR()
-            }
-          }
+          on: { click: _vm.showDialogue }
         },
-        [_vm._v("\n            Refrescar QR\n        ")]
+        [_vm._v("\n            Cerrar mesa\n        ")]
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
 render._withStripped = true
 
 

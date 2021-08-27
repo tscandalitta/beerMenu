@@ -17,7 +17,7 @@
                             <p class="card-text m-1">{{ order.comments }}</p>
                         </template>
                         <button class="btn btn-success" @click="acceptOrder(index)">Aceptar</button>
-                        <button class="btn btn-sm btn-outline-danger">Rechazar</button>
+                        <button class="btn btn-sm btn-outline-danger" @click="rejectOrder(index)">Rechazar</button>
                     </div>
                 </div>
             </div>
@@ -32,6 +32,7 @@
             return {
                 orderToDismiss: null,
                 orders: [],
+                attention_requests: [],
             }
         },
         methods: {
@@ -40,16 +41,14 @@
                 this.orderToDismiss = index;
                 this.dismissOrder();
             },
-            showCommentsField: function (index) {
+            rejectOrder: function (index) {
+                this.saveRejectedOrder(this.orders[index].id);
                 this.orderToDismiss = index;
-                this.openModal();
-            },
-            rejectOrder: function () {
-                this.saveRejectedOrder(this.orders[this.orderToDismiss].id);
                 this.dismissOrder();
             },
             dismissOrder: function () {
                 this.orders.splice(this.orderToDismiss, 1);
+                
                 this.orderToDismiss = null;
             },
             saveConfirmedOrder: function (orderId) {
@@ -73,11 +72,11 @@
                     $('#commentsTextArea').focus();
                 })
             },
-            checkForNewOrders: function () {
-                this.sendRequest();
-                setInterval(this.sendRequest,10000);
+            retrieveData: function () {
+                setInterval(this.checkForNewOrders(),10000);
+                setInterval(this.checkForNewAttentionRequests(),10000);
             },
-            sendRequest: function () {
+            checkForNewOrders: function () {
                 axios
                     .get('/api/orders', {
                         params: {
@@ -87,11 +86,19 @@
                     .then(response => {
                         this.orders = response['data'];
                     })
+                    .catch(error => console.error(error));;
+            },
+            checkForNewAttentionRequests: function () {
+                axios
+                    .get('/api/attention_requests')
+                    .then(response => {
+                        this.attention_requests = response['data'];
+                    })
                     .catch(error => console.error(error));
             },
         },
         mounted() {
-            this.checkForNewOrders();
+            this.retrieveData();
         }
     }
 </script>

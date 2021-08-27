@@ -16,12 +16,13 @@ class TableController extends Controller
      */
     public function index()
     {
-        return response()->json(Table::all(), 200);
+        return response()->json(Table::all());
     }
 
     public function showTables()
     {
-        $tables = Table::all();
+        $tables = Table::orderBy('number','ASC')->get();
+
 
         return view('tables.tables', compact('tables'));
     }
@@ -59,7 +60,7 @@ class TableController extends Controller
     {
         $table = Table::find(request('table'));
         return QrCode::size(300)
-            ->generate(env('APP_URL') . '/?table=' . $table->id . '&token=' . $table->token);
+            ->generate(env('MENU_APP_URL') . '/?mesa=' . $table->id . '&token=' . $table->token);
     }
 
     /**

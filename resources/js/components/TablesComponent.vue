@@ -1,5 +1,26 @@
 <template>
     <div class="container">
+        <div class="modal fade" id="confirmDialogue" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="m-0 modal-title" id="modalLabel" style="font-size: 1.3em; font-weight: bolder"><strong>Cerrar mesa {{ selectedTable }}</strong></p>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Seguro que desea cerrar la <strong>MESA {{ selectedTable }}</strong>?</p>
+                        <p>Los comensales no podrán seguir pidiendo.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" @click="refreshQR">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="form-row mb-4 d-flex justify-content-center">
             <div class="col"></div>
             <select class="form-control" v-model="selectedTable" style="width: 100%">
@@ -10,14 +31,15 @@
             <span v-html="qrCodeHTML" v-bind:style="{opacity: opacity}"></span>
         </div>
         <div class="form-row d-flex justify-content-center">
-            <button class="btn btn-sm btn-danger" @click="() => refreshQR()" :disabled="disabledButton">
-                Refrescar QR
+            <button class="btn btn-sm btn-danger" @click="showDialogue" :disabled="disabledButton">
+                Cerrar mesa
             </button>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
     props: {
         tables: {
@@ -45,12 +67,15 @@ export default {
         sendPost: function (id) {
             axios
                 .post(`/api/tables/${id}`, {
-                    //TODO: enviar bearer para autenticar
+                    //TODO: enviar bearer
                 })
                 .then(response => {
-                    this.updateQRCode();
                 })
                 .catch(error => console.error(error));
+            this.updateQRCode();
+        },
+        showDialogue: function () {
+            $('#confirmDialogue').modal('show');
         },
         getToken: function (tableId) {
             const mesa = this.mesas.find(table => table['id'] === tableId);
