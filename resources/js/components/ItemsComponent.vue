@@ -23,7 +23,9 @@
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-success float-right">Create Item</button>
+        <a href="/items/create">
+            <button type="button" class="btn btn-success float-right">Create Item</button>
+        </a>
     </div>
 </template>
 
