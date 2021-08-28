@@ -19,6 +19,7 @@ window.Vue = require('vue').default;
 Vue.component('ordenes', require('./components/OrdenesComponent.vue').default);
 Vue.component('tables', require('./components/TablesComponent.vue').default);
 Vue.component('items', require('./components/ItemsComponent.vue').default);
+Vue.component('item-form', require('./components/ItemFormComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
