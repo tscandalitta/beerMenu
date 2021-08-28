@@ -19,4 +19,8 @@ class HomeController extends Controller
     public function listItems(){
         return view('items.list_items');
     }
+
+    public function createItem(){
+        return view('items.create_item');
+    }
 }

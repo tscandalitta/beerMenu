@@ -22,6 +22,7 @@ Route::get('/orders/real_time', [OrderController::class, 'realTime']);
 
 Route::get('/tables', [TableController::class,'showTables']);
 Route::get('/items', [HomeController::class, 'listItems'])->name('list-items');
+Route::get('/items/create', [HomeController::class, 'createItem'])->name('create-items');
 Auth::routes();
 
 Route::get('/', function () {
