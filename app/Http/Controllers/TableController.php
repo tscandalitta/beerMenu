@@ -67,11 +67,11 @@ class TableController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Table $table)
     {
-        //
+        return response()->json($table);
     }
 
     /**
