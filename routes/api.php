@@ -28,6 +28,7 @@ Route::middleware('api')->get('/orders/table/{table}', [OrderController::class,'
 
 Route::middleware('api')->get('/tables', [TableController::class,'index']);
 Route::middleware('api')->post('/tables', [TableController::class,'store']);
+Route::middleware('api')->get('/tables/{table}', [TableController::class,'show']);
 Route::middleware('api')->post('/tables/{table}', [TableController::class,'close']);
 
 Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
