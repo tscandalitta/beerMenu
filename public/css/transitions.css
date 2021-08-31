@@ -9,5 +9,5 @@
     /*transform: translateY(-1000px);*/
 }
 .list-complete-leave-active {
-    position: relative;
+    position: fixed;
 }
