@@ -17,7 +17,6 @@
                             <p class="card-text m-1">{{ order.comments }}</p>
                         </template>
                         <button class="btn btn-success" @click="acceptOrder(index)">Aceptar</button>
-                        <button class="btn btn-sm btn-outline-danger" @click="rejectOrder(index)">Rechazar</button>
                     </div>
                 </div>
             </div>
@@ -41,21 +40,12 @@
                 this.orderToDismiss = index;
                 this.dismissOrder();
             },
-            rejectOrder: function (index) {
-                this.saveRejectedOrder(this.orders[index].id);
-                this.orderToDismiss = index;
-                this.dismissOrder();
-            },
             dismissOrder: function () {
                 this.orders.splice(this.orderToDismiss, 1);
-                
                 this.orderToDismiss = null;
             },
             saveConfirmedOrder: function (orderId) {
                 this.editOrder(orderId,'CLOSED');
-            },
-            saveRejectedOrder: function (orderId) {
-                this.editOrder(orderId,'REJECTED');
             },
             editOrder: function (orderId, orderState) {
                 axios
