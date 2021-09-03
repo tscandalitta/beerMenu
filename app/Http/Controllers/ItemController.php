@@ -46,11 +46,11 @@ class ItemController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Item $item)
     {
-        //
+        return response()->json($item);
     }
 
     /**
