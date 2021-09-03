@@ -2,7 +2,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
-                <h3>Create Item</h3>
+                <h3 v-if="item">Update Item</h3>
+                <h3 v-else>Create Item</h3>
             </div>
         </div>
 
@@ -12,7 +13,6 @@
                     <div class="form-group mb-3">
                         <label for="nameInput">Name</label>
                         <input type="text" class="form-control" id="nameInput"
-                               placeholder="Enter Name"
                                v-model="name">
                     </div>
                 </div>
@@ -71,13 +71,27 @@
 
 <script>
 export default {
+    props: {
+        item: {
+            type: Object,
+            default(){
+                return {
+                    name: "",
+                    description:  "",
+                    price:  0,
+                    inStock: false
+                }
+            }
+        }
+    },
     name: "ItemFormComponent",
     data() {
+        console.log(this.item.description);
         return {
-            name: "",
-            description: "",
-            price: 0,
-            inStock: false
+            name: this.item.description || "",
+            description: this.item.description || "",
+            price: this.item.price || 0,
+            inStock: this.item.in_stock || false
         }
     },
     methods: {
@@ -94,6 +108,12 @@ export default {
                     window.location.href = '/items'
                 })
                 .catch(error => console.error(error));
+        }
+    },
+    mounted() {
+        if(this.item){
+            console.log(this.item);
+            this.name = this.item.name
         }
     },
 }
