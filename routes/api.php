@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('api')->get('/items', [ItemController::class,'index']);
+Route::middleware('api')->get('/items/{item}', [ItemController::class, 'show']);
 Route::middleware('api')->post('/items', [ItemController::class,'store']);
 Route::middleware('api')->put('/items/{item}', [ItemController::class,'update']);
 
