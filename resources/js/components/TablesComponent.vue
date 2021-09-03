@@ -22,10 +22,11 @@
             </div>
         </div>
         <div class="form-row mb-4 d-flex justify-content-center">
-            <div class="col"></div>
-            <select class="form-control" v-model="selectedTable" style="width: 100%">
-                <option v-for="mesa in mesas" :value="mesa.id" >Mesa {{ mesa.number }}</option>
-            </select>
+            <div class="col-6">
+                <select class="form-control" v-model="selectedTable" style="width: 100%">
+                    <option v-for="mesa in mesas" :value="mesa.id" >Mesa {{ mesa.number }}</option>
+                </select>
+            </div>
         </div>
         <div class="form-row mb-4 d-flex justify-content-center">
             <span v-html="qrCodeHTML" v-bind:style="{opacity: opacity}"></span>

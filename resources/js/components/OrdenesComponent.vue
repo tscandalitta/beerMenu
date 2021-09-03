@@ -63,8 +63,10 @@
                 })
             },
             retrieveData: function () {
-                setInterval(this.checkForNewOrders(),10000);
-                setInterval(this.checkForNewAttentionRequests(),10000);
+                this.checkForNewOrders();
+                this.checkForNewAttentionRequests();
+                setInterval(this.checkForNewOrders,10000);
+                setInterval(this.checkForNewAttentionRequests,10000);
             },
             checkForNewOrders: function () {
                 axios

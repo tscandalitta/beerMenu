@@ -48,7 +48,13 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('list-items') }}">Admin Items</a>
+                        <a class="nav-link" href="{{ route('real-time-orders') }}">Ver ordenes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('show-tables') }}">Ver mesas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-items') }}">Admin items</a>
                     </li>
                     <!-- Authentication Links -->
                     @guest

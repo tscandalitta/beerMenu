@@ -2049,7 +2049,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {},
   data: function data() {
@@ -2065,20 +2064,12 @@ __webpack_require__.r(__webpack_exports__);
       this.orderToDismiss = index;
       this.dismissOrder();
     },
-    rejectOrder: function rejectOrder(index) {
-      this.saveRejectedOrder(this.orders[index].id);
-      this.orderToDismiss = index;
-      this.dismissOrder();
-    },
     dismissOrder: function dismissOrder() {
       this.orders.splice(this.orderToDismiss, 1);
       this.orderToDismiss = null;
     },
     saveConfirmedOrder: function saveConfirmedOrder(orderId) {
       this.editOrder(orderId, 'CLOSED');
-    },
-    saveRejectedOrder: function saveRejectedOrder(orderId) {
-      this.editOrder(orderId, 'REJECTED');
     },
     editOrder: function editOrder(orderId, orderState) {
       axios.put("/api/orders/".concat(orderId), {
@@ -2094,8 +2085,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     retrieveData: function retrieveData() {
-      setInterval(this.checkForNewOrders(), 10000);
-      setInterval(this.checkForNewAttentionRequests(), 10000);
+      this.checkForNewOrders();
+      this.checkForNewAttentionRequests();
+      setInterval(this.checkForNewOrders, 10000);
+      setInterval(this.checkForNewAttentionRequests, 10000);
     },
     checkForNewOrders: function checkForNewOrders() {
       var _this = this;
@@ -2139,6 +2132,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -38401,19 +38395,6 @@ var render = function() {
                         }
                       },
                       [_vm._v("Aceptar")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-sm btn-outline-danger",
-                        on: {
-                          click: function($event) {
-                            return _vm.rejectOrder(index)
-                          }
-                        }
-                      },
-                      [_vm._v("Rechazar")]
                     )
                   ],
                   2
@@ -38531,44 +38512,44 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
-      _c("div", { staticClass: "col" }),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedTable,
-              expression: "selectedTable"
+      _c("div", { staticClass: "col-6" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selectedTable,
+                expression: "selectedTable"
+              }
+            ],
+            staticClass: "form-control",
+            staticStyle: { width: "100%" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.selectedTable = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
             }
-          ],
-          staticClass: "form-control",
-          staticStyle: { width: "100%" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedTable = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        _vm._l(_vm.mesas, function(mesa) {
-          return _c("option", { domProps: { value: mesa.id } }, [
-            _vm._v("Mesa " + _vm._s(mesa.number))
-          ])
-        }),
-        0
-      )
+          },
+          _vm._l(_vm.mesas, function(mesa) {
+            return _c("option", { domProps: { value: mesa.id } }, [
+              _vm._v("Mesa " + _vm._s(mesa.number))
+            ])
+          }),
+          0
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-row mb-4 d-flex justify-content-center" }, [
