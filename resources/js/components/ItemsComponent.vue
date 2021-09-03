@@ -16,9 +16,12 @@
                     <td v-if="item.in_stock"> <i class="fas fa-check"></i></td>
                     <td v-else> <i class="fas fa-times"></i></td>
                     <td>
-                        <button type="button" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <a :href="'/items/update/' + item.id">
+                            <button type="button" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </a>
+
                     </td>
                 </tr>
             </tbody>
@@ -45,6 +48,9 @@ export default {
                     this.items = response['data'];
                 })
                 .catch(error => console.error(error));
+        },
+        getEditUrl: function (item){
+            return "/items/update/" + item.id;
         }
     },
     mounted() {
