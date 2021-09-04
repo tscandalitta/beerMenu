@@ -101,7 +101,7 @@ export default {
                     this.name = response.data.name;
                     this.description = response.data.description;
                     this.price = response.data.price;
-                    this.inStock = response.data.in_stock;
+                    this.inStock = response.data.in_stock === "1";
                 })
                 .catch(error => console.error(error));
         },

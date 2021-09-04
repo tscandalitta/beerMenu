@@ -1946,7 +1946,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.name = response.data.name;
         _this.description = response.data.description;
         _this.price = response.data.price;
-        _this.inStock = response.data.in_stock;
+        _this.inStock = response.data.in_stock === "1";
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -38681,7 +38681,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(item.description))]),
               _vm._v(" "),
-              item.in_stock
+              item.in_stock === "1"
                 ? _c("td", [_c("i", { staticClass: "fas fa-check" })])
                 : _c("td", [_c("i", { staticClass: "fas fa-times" })]),
               _vm._v(" "),
