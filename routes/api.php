@@ -36,4 +36,5 @@ Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
 
 Route::middleware('api')->get('/attention_requests', [AttentionRequestController::class,'index']);
 Route::middleware('api')->post('/attention_requests', [AttentionRequestController::class,'store']);
+Route::middleware('api')->delete('/attention_requests/{attention_request}', [AttentionRequestController::class,'destroy']);
 

@@ -2225,6 +2225,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {},
   data: function data() {
@@ -38792,6 +38797,8 @@ var render = function() {
         "div",
         { staticClass: "col-8" },
         [
+          _c("h3", { staticClass: "ml-1" }, [_vm._v("Ordenes")]),
+          _vm._v(" "),
           _c(
             "transition-group",
             {
@@ -38807,7 +38814,7 @@ var render = function() {
                     "card-group col-sm-12 col-lg-6 list-complete-item"
                 },
                 [
-                  _c("div", { staticClass: "card mb-3" }, [
+                  _c("div", { staticClass: "card mb-3 shadow" }, [
                     _c(
                       "div",
                       { staticClass: "card-body" },
@@ -38880,58 +38887,83 @@ var render = function() {
       _c(
         "div",
         { staticClass: "col-4" },
-        _vm._l(_vm.attention_requests, function(ar) {
-          return _c(
-            "div",
-            { key: ar.id, staticClass: "card-group list-complete-item" },
-            [
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c("h5", { staticClass: "card-title" }, [
-                      _vm._v("Mesa " + _vm._s(ar.table_id))
-                    ]),
-                    _vm._v(" "),
-                    _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
-                      _vm._v("Pedido #" + _vm._s(ar.id))
-                    ]),
-                    _vm._v(" "),
-                    ar.comments
-                      ? [
-                          _c("hr"),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "card-text m-1" }, [
-                            _vm._v("Observaciones:")
-                          ]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "card-text m-1" }, [
-                            _vm._v(_vm._s(ar.comments))
+        [
+          _c("h3", { staticClass: "ml-4" }, [_vm._v("Solicitudes")]),
+          _vm._v(" "),
+          _vm._l(_vm.attention_requests, function(ar) {
+            return _c(
+              "div",
+              { key: ar.id, staticClass: "card-group list-complete-item" },
+              [
+                _c("div", { staticClass: "card mb-3 ml-3 shadow" }, [
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v("Mesa " + _vm._s(ar.table_id))
+                      ]),
+                      _vm._v(" "),
+                      ar.type === "WAITER"
+                        ? _c("h6", { staticClass: "card-subtitle mb-2" }, [
+                            _vm._v("Solicitan al "),
+                            _c("b", [_vm._v("mozo")])
                           ])
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success",
-                        on: {
-                          click: function($event) {
-                            return _vm.acceptOrder(_vm.index)
-                          }
-                        }
-                      },
-                      [_vm._v("Aceptar")]
-                    )
-                  ],
-                  2
-                )
-              ])
-            ]
-          )
-        }),
-        0
+                        : _c("h6", { staticClass: "card-subtitle mb-2" }, [
+                            _vm._v("Solicitan la "),
+                            _c("b", [_vm._v("cuenta")])
+                          ]),
+                      _vm._v(" "),
+                      ar.comments
+                        ? [
+                            _c("hr"),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "card-text m-1" }, [
+                              _vm._v("Observaciones:")
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "card-text m-1" }, [
+                              _vm._v(_vm._s(ar.comments))
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      ar.type === "WAITER"
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn text-white",
+                              staticStyle: { "background-color": "#6f42c1" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.acceptOrder(_vm.index)
+                                }
+                              }
+                            },
+                            [_vm._v("Aceptar")]
+                          )
+                        : _c(
+                            "button",
+                            {
+                              staticClass: "btn text-white",
+                              staticStyle: { "background-color": "#dc3545" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.acceptOrder(_vm.index)
+                                }
+                              }
+                            },
+                            [_vm._v("Aceptar")]
+                          )
+                    ],
+                    2
+                  )
+                ])
+              ]
+            )
+          })
+        ],
+        2
       )
     ])
   ])

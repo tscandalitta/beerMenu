@@ -28,4 +28,23 @@ class AttentionRequestController extends Controller
         return response()->json(["msg" => "Unauthorized"], 401);
 
     }
+
+    public function update(Request $request, AttentionRequest $attentionRequest){
+        $table = Table::find(request("table"));
+        if($table->token == request("token")) {
+            $attentionRequest->fill($request->all());
+            $attentionRequest->save();
+            return response()->json($attentionRequest);
+        }
+    }
+
+    public function destroy(AttentionRequest $attentionRequest)
+    {
+        $table = Table::find(request("table"));
+        if($table->token == request("token")) {
+            AttentionRequest::destroy($attentionRequest->id);
+            return response()->json();
+        }
+        return response()->json(["msg" => "Unauthorized"], 401);
+    }
 }

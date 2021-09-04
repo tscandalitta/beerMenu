@@ -24,6 +24,8 @@ Route::get('/tables', [TableController::class,'showTables'])->name('show-tables'
 Route::get('/items', [HomeController::class, 'listItems'])->name('list-items');
 Route::get('/items/create', [HomeController::class, 'createItem'])->name('create-items');
 Route::get('/items/update/{item}', [HomeController::class, 'updateItem'])->name('update-item');
+Route::get('/charts', [HomeController::class,'charts'])->name('show-charts');
+
 
 Auth::routes();
 
