@@ -22,5 +22,10 @@ class TableSeeder extends Seeder
             ]);
         }
 
+        DB::table('tables')->insert([
+            'number' => 6,
+            'token' => "AAA",
+        ]);
+
     }
 }
