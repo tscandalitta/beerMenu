@@ -26,8 +26,8 @@ class OrderController extends Controller
     public function ordersByTable(Table $table)
     {
         if(request("token") == $table->token){
-            $orders_filtered = Order::where("token", request("token"))->get();
-            return response()->json(OrderResource::collection($orders_filtered));
+            $ordersFiltered = Order::where("token", request("token"))->get();
+            return response()->json(OrderResource::collection($ordersFiltered));
         }
         return response()->json(["msg" => "Unauthorized Request"], 401);
     }
