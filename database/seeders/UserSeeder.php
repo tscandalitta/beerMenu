@@ -35,6 +35,6 @@ class UserSeeder extends Seeder
             'email' => 'manager@manager.com',
             'password' => Hash::make('manager'),
         ]);
-        $waiter->assignRole('manager');
+        $manager->assignRole('manager');
     }
 }
