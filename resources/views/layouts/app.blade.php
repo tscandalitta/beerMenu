@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
-    
+
     <!-- Icon -->
     <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
@@ -50,11 +50,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('real-time-orders') }}">Ver ordenes</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('show-tables') }}">Ver mesas</a>
                     </li>
 
-                    @can('retrieve items')
+                    @can('update items')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('list-items') }}">Admin items</a>
                         </li>
