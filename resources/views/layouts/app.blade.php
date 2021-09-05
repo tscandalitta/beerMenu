@@ -53,9 +53,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('show-tables') }}">Ver mesas</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('list-items') }}">Admin items</a>
-                    </li>
+
+                    @can('retrieve items')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('list-items') }}">Admin items</a>
+                        </li>
+                    @endcan
+
+                    @can('read charts')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('show-charts') }}">Estadisticas</a>
+                        </li>
+                    @endcan
+
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
