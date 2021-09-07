@@ -29,15 +29,6 @@ class AttentionRequestController extends Controller
 
     }
 
-    public function update(Request $request, AttentionRequest $attentionRequest){
-        $table = Table::find(request("table"));
-        if($table->token == request("token")) {
-            $attentionRequest->fill($request->all());
-            $attentionRequest->save();
-            return response()->json($attentionRequest);
-        }
-    }
-
     public function destroy(AttentionRequest $attentionRequest)
     {
         $table = Table::find(request("table"));
