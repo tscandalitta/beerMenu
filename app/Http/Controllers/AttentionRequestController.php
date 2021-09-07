@@ -31,11 +31,7 @@ class AttentionRequestController extends Controller
 
     public function destroy(AttentionRequest $attentionRequest)
     {
-        $table = Table::find(request("table"));
-        if($table->token == request("token")) {
-            AttentionRequest::destroy($attentionRequest->id);
-            return response()->json();
-        }
-        return response()->json(["msg" => "Unauthorized"], 401);
+        AttentionRequest::destroy($attentionRequest->id);
+        return response()->json();
     }
 }
