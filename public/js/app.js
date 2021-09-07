@@ -2245,6 +2245,18 @@ __webpack_require__.r(__webpack_exports__);
       this.orderToDismiss = index;
       this.dismissOrder();
     },
+    acceptAttentionRequest: function acceptAttentionRequest(index) {
+      this.saveConfirmedAttentionRequest(this.attention_requests[index].id);
+      this.dismissAttentionRequest(index);
+    },
+    saveConfirmedAttentionRequest: function saveConfirmedAttentionRequest(id) {
+      axios["delete"]("/api/attention_requests/".concat(id))["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    dismissAttentionRequest: function dismissAttentionRequest(index) {
+      this.attention_requests.splice(index, 1);
+    },
     dismissOrder: function dismissOrder() {
       this.orders.splice(this.orderToDismiss, 1);
       this.orderToDismiss = null;
@@ -38890,7 +38902,7 @@ var render = function() {
         [
           _c("h3", { staticClass: "ml-4" }, [_vm._v("Solicitudes")]),
           _vm._v(" "),
-          _vm._l(_vm.attention_requests, function(ar) {
+          _vm._l(_vm.attention_requests, function(ar, index) {
             return _c(
               "div",
               { key: ar.id, staticClass: "card-group list-complete-item" },
@@ -38936,7 +38948,7 @@ var render = function() {
                               staticStyle: { "background-color": "#6f42c1" },
                               on: {
                                 click: function($event) {
-                                  return _vm.acceptOrder(_vm.index)
+                                  return _vm.acceptAttentionRequest(index)
                                 }
                               }
                             },
@@ -38949,7 +38961,7 @@ var render = function() {
                               staticStyle: { "background-color": "#dc3545" },
                               on: {
                                 click: function($event) {
-                                  return _vm.acceptOrder(_vm.index)
+                                  return _vm.acceptAttentionRequest(index)
                                 }
                               }
                             },
@@ -51457,14 +51469,12 @@ Vue.compile = compileToFunctions;
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0;
-/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
-/******/ 				for(moduleId in moreModules) {
-/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
-/******/ 					}
+/******/ 			for(moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
 /******/ 				}
-/******/ 				if(runtime) var result = runtime(__webpack_require__);
 /******/ 			}
+/******/ 			if(runtime) var result = runtime(__webpack_require__);
 /******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 /******/ 			for(;i < chunkIds.length; i++) {
 /******/ 				chunkId = chunkIds[i];

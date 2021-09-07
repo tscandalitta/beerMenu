@@ -27,7 +27,7 @@
             </div>
             <div class="col-4">
                 <h3 class="ml-4">Solicitudes</h3>
-                <div class="card-group list-complete-item" v-for="ar in attention_requests" v-bind:key="ar.id">
+                <div class="card-group list-complete-item" v-for="(ar, index) in attention_requests" v-bind:key="ar.id">
                     <div class="card mb-3 ml-3 shadow">
                         <div class="card-body">
                             <h5 class="card-title">Mesa {{ ar.table_id }}</h5>
@@ -38,8 +38,8 @@
                                 <p class="card-text m-1" >Observaciones:</p>
                                 <p class="card-text m-1">{{ ar.comments }}</p>
                             </template>
-                            <button v-if="ar.type === 'WAITER'" class="btn text-white" @click="acceptOrder(index)" style="background-color: #6f42c1;">Aceptar</button>
-                            <button v-else class="btn text-white" @click="acceptOrder(index)" style="background-color: #dc3545;">Aceptar</button>
+                            <button v-if="ar.type === 'WAITER'" class="btn text-white" @click="acceptAttentionRequest(index)" style="background-color: #6f42c1;">Aceptar</button>
+                            <button v-else class="btn text-white" @click="acceptAttentionRequest(index)" style="background-color: #dc3545;">Aceptar</button>
 
                         </div>
                     </div>
@@ -65,6 +65,18 @@
                 this.saveConfirmedOrder(this.orders[index].id);
                 this.orderToDismiss = index;
                 this.dismissOrder();
+            },
+            acceptAttentionRequest: function (index) {
+                this.saveConfirmedAttentionRequest(this.attention_requests[index].id);
+                this.dismissAttentionRequest(index);
+            },
+            saveConfirmedAttentionRequest: function (id) {
+                axios
+                    .delete(`/api/attention_requests/${id}`)
+                    .catch(error => console.error(error));
+            },
+            dismissAttentionRequest: function (index) {
+                this.attention_requests.splice(index, 1);
             },
             dismissOrder: function () {
                 this.orders.splice(this.orderToDismiss, 1);
