@@ -116,7 +116,7 @@
                     .then(response => {
                         this.orders = response['data'];
                     })
-                    .catch(error => console.error(error));;
+                    .catch(error => console.error(error));
             },
             checkForNewAttentionRequests: function () {
                 axios

@@ -2295,7 +2295,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.error(error);
       });
-      ;
     },
     checkForNewAttentionRequests: function checkForNewAttentionRequests() {
       var _this2 = this;
