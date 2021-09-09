@@ -101,10 +101,11 @@ class TableController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Table $table)
     {
-        //
+        Table::destroy($table->id);
+        return response()->json();
     }
 }
