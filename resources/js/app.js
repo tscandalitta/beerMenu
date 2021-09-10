@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import VueApexCharts from 'vue-apexcharts'
 require('./bootstrap');
 
 window.Vue = require('vue').default;
@@ -16,10 +17,13 @@ window.Vue = require('vue').default;
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 Vue.component('ordenes', require('./components/OrdenesComponent.vue').default);
 Vue.component('tables', require('./components/TablesComponent.vue').default);
 Vue.component('items', require('./components/ItemsComponent.vue').default);
 Vue.component('item-form', require('./components/ItemFormComponent.vue').default);
+Vue.component('charts', require('./components/ChartsComponent.vue').default);
 Vue.component('item-edit-form', require('./components/ItemEditFormComponent.vue').default);
 
 /**
