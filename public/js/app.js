@@ -2424,12 +2424,6 @@ __webpack_require__.r(__webpack_exports__);
     showDialogue: function showDialogue() {
       $('#confirmDialogue').modal('show');
     },
-    getToken: function getToken(tableId) {
-      var mesa = this.mesas.find(function (table) {
-        return table['id'] === tableId;
-      });
-      return mesa !== undefined ? mesa['token'] : null;
-    },
     updateQRCode: function updateQRCode() {
       this.sendRequest(this.selectedTable);
     },
@@ -2599,7 +2593,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           default:
             _this.historical = response['data'];
 
-            _this.getData(_this.historical, 'Historico');
+            _this.getData(_this.historical, 'Histórico');
 
             break;
         }
@@ -2683,6 +2677,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+var LAST_HOURS = 48;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3148,7 +3143,7 @@ var LAST_HOURS = 48;
         }];
         setTimeout(_this.getRealTimeData, 5000);
       })["catch"](function (error) {
-        return console.error();
+        return console.error(error);
       });
     }
   }

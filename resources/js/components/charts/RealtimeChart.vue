@@ -110,7 +110,7 @@ export default {
                     this.series = [{data: data[1]}];
                     setTimeout(this.getRealTimeData, 5000);
                 })
-                .catch(error => console.error());
+                .catch(error => console.error(error));
         }
     },
 }

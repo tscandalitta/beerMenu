@@ -78,10 +78,6 @@ export default {
         showDialogue: function () {
             $('#confirmDialogue').modal('show');
         },
-        getToken: function (tableId) {
-            const mesa = this.mesas.find(table => table['id'] === tableId);
-            return (mesa !== undefined) ? mesa['token'] : null;
-        },
         updateQRCode: function () {
             this.sendRequest(this.selectedTable);
         },

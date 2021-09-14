@@ -63,7 +63,7 @@
 
                     @can('read charts')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('show-charts') }}">Estadisticas</a>
+                            <a class="nav-link" href="{{ route('show-charts') }}">Estadísticas</a>
                         </li>
                     @endcan
 

@@ -99,7 +99,7 @@ export default {
                             break;
                         default:
                             this.historical = response['data'];
-                            this.getData(this.historical, 'Historico');
+                            this.getData(this.historical, 'Histórico');
                             break;
                     }
                 })
