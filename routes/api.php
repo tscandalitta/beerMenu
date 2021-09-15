@@ -21,6 +21,7 @@ Route::middleware('api')->get('/items', [ItemController::class,'index']);
 Route::middleware('api')->get('/items/{item}', [ItemController::class, 'show']);
 Route::middleware('api')->post('/items', [ItemController::class,'store']);
 Route::middleware('api')->put('/items/{item}', [ItemController::class,'update']);
+Route::middleware('api')->get('/items-summary', [ItemController::class,'summary']);
 
 Route::middleware('api')->get('/orders', [OrderController::class,'index']);
 Route::middleware('api')->post('/orders', [OrderController::class,'store']);
