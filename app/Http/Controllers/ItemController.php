@@ -99,23 +99,20 @@ class ItemController extends Controller
     {
         $delta_days = request('days', self::DEFAULT_DELTA_DAYS);
         $delta_horus = request('hours', self::DEFAULT_DELTA_HOURS);
-        $end_date = date("Y-m-d H:i:s");
 
         if ($delta_days != self::HISTORICAL_FLAG) {
-            $delta = $delta_days * 24 * 60 * 60;
-            $delta += $delta_horus * 60 * 60;
-            $start_date_miliseconds = (new DateTime())->getTimestamp() - $delta;
-            $start_date = (new DateTime())->setTimestamp($start_date_miliseconds)->format("Y-m-d H:i:s");
+            $delta_seconds = $delta_days * 24 * 60 * 60 + $delta_horus * 60 * 60;
+            $start_date_seconds = (new DateTime())->getTimestamp() - $delta_seconds;
+            $start_date = $this->createDate($start_date_seconds);
         }
         else
-            $start_date = (new DateTime())->setTimestamp(0)->format("Y-m-d H:i:s");
+            $start_date = $this->createDate(0);
 
-        $orders = Order::whereBetween('created_at',[$start_date,$end_date])->get();
+        $orders = Order::where('created_at','>=',$start_date)->get();
         $items = [];
 
         foreach ($orders as $order) {
-            $order_items = $order->items;
-            foreach ($order_items as $order_item) {
+            foreach ($order->items as $order_item) {
                 $item_id = $order_item->pivot->item_id;
                 if (array_key_exists($item_id, $items))
                     $items[$item_id] += intval($order_item->pivot->items_amount);
@@ -124,5 +121,10 @@ class ItemController extends Controller
             }
         }
         return response()->json($items);
+    }
+
+    function createDate($timestamp)
+    {
+        return (new DateTime())->setTimestamp($timestamp)->format("Y-m-d H:i:s");
     }
 }
