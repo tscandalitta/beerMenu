@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Order;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -105,12 +106,23 @@ class ItemController extends Controller
             $delta += $delta_horus * 60 * 60;
             $start_date_miliseconds = (new DateTime())->getTimestamp() - $delta;
             $start_date = (new DateTime())->setTimestamp($start_date_miliseconds)->format("Y-m-d H:i:s");
-
-            $items = [];//TODO: Obtener los items pedidos desde la fecha
         }
         else
-            $items = Item::all();
+            $start_date = (new DateTime())->setTimestamp(0)->format("Y-m-d H:i:s");
 
+        $orders = Order::whereBetween('created_at',[$start_date,$end_date])->get();
+        $items = [];
+
+        foreach ($orders as $order) {
+            $order_items = $order->items;
+            foreach ($order_items as $order_item) {
+                $item_id = $order_item->pivot->item_id;
+                if (array_key_exists($item_id, $items))
+                    $items[$item_id] += intval($order_item->pivot->items_amount);
+                else
+                    $items[$item_id] = intval($order_item->pivot->items_amount);
+            }
+        }
         return response()->json($items);
     }
 }

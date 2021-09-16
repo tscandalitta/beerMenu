@@ -19,7 +19,7 @@ export default {
             series: [{
                 data: [],
             }],
-            chartOptions: {
+            options: {
                 chart: {
                     height: 350,
                     type: 'bar',
@@ -68,7 +68,7 @@ export default {
                 name: "Cantidad",
                 data: data
             }];
-            this.chartOptions = {
+            this.options = {
                 labels: labels
             };
         },

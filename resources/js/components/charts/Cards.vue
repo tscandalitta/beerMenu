@@ -48,6 +48,7 @@
 <script>
 const LAST_HOURS = 48;
 
+
 export default {
     data() {
         return {

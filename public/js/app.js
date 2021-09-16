@@ -2488,7 +2488,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       series: [{
         data: []
       }],
-      chartOptions: {
+      options: {
         chart: {
           height: 350,
           type: 'bar'
@@ -2549,7 +2549,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         name: "Cantidad",
         data: data
       }];
-      this.chartOptions = {
+      this.options = {
         labels: labels
       };
     },
