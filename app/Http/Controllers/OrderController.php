@@ -124,6 +124,7 @@ class OrderController extends Controller
         $total = $closedOrders->reduce(function ($carry, $order) {
             return $carry + $order->getTotal();
         });
+        
 
         return response()->json(["total" => $total]);
     }
