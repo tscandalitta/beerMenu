@@ -117,6 +117,17 @@ class OrderController extends Controller
         //
     }
 
+    public function totalEarns()
+    {
+        $closedOrders = Order::where("state", "CLOSED")->get();
+        
+        $total = $closedOrders->reduce(function ($carry, $order) {
+            return $carry + $order->getTotal();
+        });
+
+        return response()->json(["total" => $total]);
+    }
+
     public function realTime() {
         return view('orders.realtime');
     }
