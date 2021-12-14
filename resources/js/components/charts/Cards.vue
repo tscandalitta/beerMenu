@@ -11,8 +11,17 @@
                             </div>
                             <div class="media-body ml-4">
                                 <h4 class="text-dark">Ganancias</h4>
-                                <span>Diarias</span>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select class="form-control form-control-sm" style="width: 120px" @change="updateEarns($event)">
+                                            <option value="1">del dia</option>
+                                            <option value="7">de la semana</option>
+                                            <option value="30">del mes</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+                               
                             <div class="align-self-center mr-3">
                                 <i class="fa fa-wallet fa-3x text-default"></i>
                             </div>
@@ -31,7 +40,11 @@
                             </div>
                             <div class="media-body ml-4">
                                 <h4 class="text-dark">Birra más tomada</h4>
-                                <span>{{ buildAmount }}</span>
+                                 <select class="form-control form-control-sm" style="width: 120px" @change="updateBestSeller($event)">
+                                            <option value="1">del dia</option>
+                                            <option value="7">de la semana</option>
+                                            <option value="30">del mes</option>
+                                        </select>
                             </div>
                             <div class="align-self-center mr-3">
                                 <i class="fa fa-beer fa-3x text-warning"></i>
@@ -73,33 +86,38 @@ export default {
                 this.earns += item.amount * item.price;
             }
         },
-        getBestSeller() {
-            for (const item of this.lastHoursData) {
-                if (this.amountBestSeller < item.amount) {
-                    this.amountBestSeller = item.amount;
-                    this.bestSeller = item.name;
-                }
-            }
+        updateEarns(event) {
+            axios.get(`/api/orders/total?days=${event.target.value}`)
+            .then(response => {
+                this.earns = response.data.total;
+            })
+            .catch(error => console.error(error));
         },
-        getAxios() {
-            axios
-                .get('/api/items-summary', {
-                    params: {
-                        hours: LAST_HOURS,
-                    }
-                })
-                .then(response => {
-                    this.lastHoursData = response['data'];
-                    console.log(this.lastHoursData);
-                    this.getEarns();
-                    this.getBestSeller();
-                    setTimeout(this.getAxios, 10000);
-                })
-                .catch(error => console.error(error));
+        updateBestSeller(event) {
+            axios.get(`/api/items-summary?days=${event.target.value}`)
+            .then(response => {
+                this.bestSeller = ""
+            })
+            .catch(error => console.error(error));
+        },
+        getBestSeller() {
+            axios.get(`/api/items-summary?days=1`)
+            .then(response => {
+                this.bestSeller = ""
+            })
+            .catch(error => console.error(error));
+        },
+        getEarns() {
+            axios.get(`/api/orders/total?days=1`)
+            .then(response => {
+                this.earns = response.data.total;
+            })
+            .catch(error => console.error(error));
         }
     },
     mounted() {
-        this.getAxios();
+        this.getEarns();
+        this.getBestSeller();
     }
 }
 </script>
