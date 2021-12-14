@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
-    const DEFAULT_DELTA_DAYS = 0;
+    const DEFAULT_DELTA_DAYS = -1;
     const DEFAULT_DELTA_HOURS = 0;
     const HISTORICAL_FLAG = -1;
     /**
@@ -113,11 +113,11 @@ class ItemController extends Controller
 
         foreach ($orders as $order) {
             foreach ($order->items as $order_item) {
-                $item_id = $order_item->pivot->item_id;
-                if (array_key_exists($item_id, $items))
-                    $items[$item_id] += intval($order_item->pivot->items_amount);
+                $item = Item::find($order_item->pivot->item_id);
+                if (array_key_exists($item->name, $items))
+                    $items[$item->name] += intval($order_item->pivot->items_amount);
                 else
-                    $items[$item_id] = intval($order_item->pivot->items_amount);
+                    $items[$item->name] = intval($order_item->pivot->items_amount);
             }
         }
         return response()->json($items);
