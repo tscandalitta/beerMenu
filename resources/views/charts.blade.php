@@ -1,11 +1,14 @@
 @extends('layouts.app')
 
-@section('title','Estadisticas')
+@section('title','Estadísticas')
 @section('content')
-    <cards></cards> 
-    <charts></charts>
-    <piechart></piechart>
-    <barchart></barchart>
+    <div class="container">
+        <cards></cards> 
+        <charts></charts>
+    </div>
+{{--    <piechart></piechart>--}}
+{{--    <barchart></barchart>--}}
+
 @endsection
 
 @section('scripts')
