@@ -98,10 +98,10 @@ class ItemController extends Controller
     public function summary()
     {
         $delta_days = request('days', self::DEFAULT_DELTA_DAYS);
-        $delta_horus = request('hours', self::DEFAULT_DELTA_HOURS);
+        $delta_hours = request('hours', self::DEFAULT_DELTA_HOURS);
 
         if ($delta_days != self::HISTORICAL_FLAG) {
-            $delta_seconds = $delta_days * 24 * 60 * 60 + $delta_horus * 60 * 60;
+            $delta_seconds = $delta_days * 24 * 60 * 60 + $delta_hours * 60 * 60;
             $start_date_seconds = (new DateTime())->getTimestamp() - $delta_seconds;
             $start_date = $this->createDate($start_date_seconds);
         }
