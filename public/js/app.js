@@ -2624,12 +2624,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2695,7 +2710,7 @@ var LAST_HOURS = 48;
       return new Intl.NumberFormat("de-DE").format(this.amountBestSeller);
     }
   },
-  methods: {
+  methods: _defineProperty({
     getEarns: function getEarns() {
       this.earns = 0;
 
@@ -2713,48 +2728,45 @@ var LAST_HOURS = 48;
         _iterator.f();
       }
     },
-    getBestSeller: function getBestSeller() {
-      var _iterator2 = _createForOfIteratorHelper(this.lastHoursData),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var item = _step2.value;
-
-          if (this.amountBestSeller < item.amount) {
-            this.amountBestSeller = item.amount;
-            this.bestSeller = item.name;
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-    },
-    getAxios: function getAxios() {
+    updateEarns: function updateEarns(event) {
       var _this = this;
 
-      axios.get('/api/items-summary', {
-        params: {
-          hours: LAST_HOURS
-        }
-      }).then(function (response) {
-        _this.lastHoursData = response['data'];
-        console.log(_this.lastHoursData);
+      axios.get("/api/orders/total?days=".concat(event.target.value)).then(function (response) {
+        _this.earns = response.data.total;
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    updateBestSeller: function updateBestSeller(event) {
+      var _this2 = this;
 
-        _this.getEarns();
+      axios.get("/api/items-summary?days=".concat(event.target.value)).then(function (response) {
+        _this2.bestSeller = "";
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    getBestSeller: function getBestSeller() {
+      var _this3 = this;
 
-        _this.getBestSeller();
-
-        setTimeout(_this.getAxios, 10000);
+      axios.get("/api/items-summary?days=1").then(function (response) {
+        _this3.bestSeller = "";
       })["catch"](function (error) {
         return console.error(error);
       });
     }
-  },
+  }, "getEarns", function getEarns() {
+    var _this4 = this;
+
+    axios.get("/api/orders/total?days=1").then(function (response) {
+      _this4.earns = response.data.total;
+    })["catch"](function (error) {
+      return console.error(error);
+    });
+  }),
   mounted: function mounted() {
-    this.getAxios();
+    this.getEarns();
+    this.getBestSeller();
   }
 });
 
@@ -2779,6 +2791,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2787,14 +2806,45 @@ __webpack_require__.r(__webpack_exports__);
           id: 'vuechart-example'
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          categories: []
         }
       },
       series: [{
         name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }]
+        data: []
+      }],
+      periodo: '1'
     };
+  },
+  methods: {
+    refreshChart: function refreshChart(data) {
+      var newData = Object.values(data);
+      this.series = [{
+        data: newData
+      }];
+      var newCategories = Object.keys(data);
+      this.options = {
+        xaxis: {
+          categories: newCategories
+        }
+      };
+    },
+    updateChart: function updateChart(periodo) {
+      var _this = this;
+
+      axios.get('/api/items-summary', {
+        params: {
+          days: periodo
+        }
+      }).then(function (response) {
+        _this.refreshChart(response['data']);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.updateChart(this.periodo);
   }
 });
 
@@ -40672,9 +40722,41 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _c("div", { staticClass: "media-body ml-4" }, [
+                _c("h4", { staticClass: "text-dark" }, [_vm._v("Ganancias")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-3" }, [
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control form-control-sm",
+                        staticStyle: { width: "120px" },
+                        on: {
+                          change: function($event) {
+                            return _vm.updateEarns($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "1" } }, [
+                          _vm._v("del dia")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "7" } }, [
+                          _vm._v("de la semana")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "30" } }, [
+                          _vm._v("del mes")
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(0)
             ])
           ])
         ])
@@ -40697,10 +40779,34 @@ var render = function() {
                   _vm._v("Birra más tomada")
                 ]),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.buildAmount))])
+                _c(
+                  "select",
+                  {
+                    staticClass: "form-control form-control-sm",
+                    staticStyle: { width: "120px" },
+                    on: {
+                      change: function($event) {
+                        return _vm.updateBestSeller($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("del dia")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "7" } }, [
+                      _vm._v("de la semana")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "30" } }, [
+                      _vm._v("del mes")
+                    ])
+                  ]
+                )
               ]),
               _vm._v(" "),
-              _vm._m(2)
+              _vm._m(1)
             ])
           ])
         ])
@@ -40711,16 +40817,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "media-body ml-4" }, [
-      _c("h4", { staticClass: "text-dark" }, [_vm._v("Ganancias")]),
-      _vm._v(" "),
-      _c("span", [_vm._v("Diarias")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -40762,8 +40858,55 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
     [
+      _c("h3", [_vm._v("Los 5 mas vendidos")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.periodo,
+              expression: "periodo"
+            }
+          ],
+          attrs: { id: "periodo" },
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.periodo = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              function($event) {
+                return _vm.updateChart(_vm.periodo)
+              }
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "1" } }, [_vm._v("día")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "7" } }, [_vm._v("semana")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "30" } }, [_vm._v("mes")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "365" } }, [_vm._v("año")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("histórico")])
+        ]
+      ),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: {
           width: "500",
@@ -40772,8 +40915,7 @@ var render = function() {
           series: _vm.series
         }
       }),
-      _vm._v(" "),
-      _c("barchart")
+      _vm._v("\n`    ")
     ],
     1
   )
