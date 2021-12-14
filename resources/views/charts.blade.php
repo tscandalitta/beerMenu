@@ -2,9 +2,10 @@
 
 @section('title','Estadisticas')
 @section('content')
+    <cards></cards> 
     <charts></charts>
-<piechart></piechart>
-<barchart></barchart>
+    <piechart></piechart>
+    <barchart></barchart>
 @endsection
 
 @section('scripts')
