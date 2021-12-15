@@ -23,7 +23,15 @@ export default {
                 },
                 xaxis: {
                     categories: []
-                }
+                },
+                theme: {
+                    palette: 'palette1' // upto palette10
+                },
+                plotOptions: {
+                    bar: {
+                        distributed: true
+                    }
+                },
             },
             series: [{
                 name: 'series-1',
