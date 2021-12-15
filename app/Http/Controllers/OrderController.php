@@ -132,6 +132,12 @@ class OrderController extends Controller
         return response()->json(["total" => $total]);
     }
 
+    public function earningsByDay()
+    {
+        $oldest = Order::oldest()->first();
+        return $oldest;
+    }
+
     public function realTime() {
         return view('orders.realtime');
     }
