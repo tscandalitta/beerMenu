@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <h3>Las 5 cervezas más vendidas, no trae 5, trae todas</h3>
         <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
             <option value="1">día</option> <!-- en realidad son 24hs esto, deberia ser el acumulado del dia !-->

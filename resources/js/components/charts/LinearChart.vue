@@ -1,8 +1,14 @@
 <template>
-    <div>
-        <h3>Cervezas y ganancias</h3>
-        <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
-        `    </div>
+    <div class="row">
+        <div class="col-6">
+            <h3>Ventas históricas</h3>
+            <apexchart width="500" type="line" :options="optionsCervezas" :series="seriesCervezas"></apexchart>
+        </div>
+        <div class="col-6">
+            <h3>Ganancias históricas</h3>
+            <apexchart width="500" type="line" :options="optionsGanancias" :series="seriesGanancias"></apexchart>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -10,16 +16,17 @@ export default {
 
     data() {
         return {
-            series: [{
+            seriesCervezas: [{
                 name: "Cervezas",
                 type: 'line',
-                data: [1,2,3,4,5,6],
-            }, {
+                data: [],
+            }],
+            seriesGanancias: [{
                 name: "Ganancias",
                 type: 'line',
-                data: [5,6,7,8,9,10],
+                data: [],
             }],
-            options: {
+            optionsCervezas: {
                 chart: {
                     height: 350,
                     type: 'line',
@@ -32,42 +39,77 @@ export default {
                         autoSelected: 'zoom'
                     }
                 },
-                labels: ['a','b','c','d','e','f'],
+                labels: [],
                 stroke: {
                     curve: 'smooth',
                 },
                 xaxis: {
+                    type: 'datetime',
                     categories: [],
                 },
-                yaxis: [{
-                    title: {
-                        text: 'Items',
+                colors: ['#FFA704'],
+            },
+            optionsGanancias: {
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
                     },
-                }, {
-                    opposite: true,
-                    title: {
-                        text: 'Pesos $',
-                    },
-                }],
+                    toolbar: {
+                        autoSelected: 'zoom'
+                    }
+                },
+                labels: [],
+                stroke: {
+                    curve: 'smooth',
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: [],
+                },
+                colors: ['#29CC20'],
             },
         }
     },
     methods: {
-        updateChart: function (periodo) {
+        setOptions: function (data) {
+          let dates = data.map(item => item.date);
+            this.optionsCervezas = {xaxis: { categories: dates}}
+            this.optionsGanancias = {xaxis: { categories: dates}}
+        },
+        refreshBeersChart: function (data) {
+            let quantities = data.map(item => item.quantities);
+            this.seriesCervezas = [{
+                data: quantities
+            }];
+        },
+        refreshEarningsChart: function (data) {
+            let earnings = data.map(item => item.earnings);
+            this.seriesGanancias = [{
+                data: earnings
+            }];
+        },
+        updateChart: function () {
             axios
-                .get('/api/items-summary', {
-                    params: {
-                        days: periodo,
-                    }
-                })
+                .get('/api/orders/quantities')
                 .then(response => {
-                    this.refreshChart(response['data']);
+                    this.setOptions(response['data']);
+                    this.refreshBeersChart(response['data']);
+                })
+                .catch(error => console.error(error));
+            axios
+                .get('/api/orders/earnings')
+                .then(response => {
+                    this.refreshEarningsChart(response['data']);
                 })
                 .catch(error => console.error(error));
         },
     },
     mounted() {
-        //this.updateChart();
+        this.updateChart();
     }
 }
 </script>

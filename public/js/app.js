@@ -2684,7 +2684,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var LAST_HOURS = 48;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2695,11 +2694,8 @@ var LAST_HOURS = 48;
     };
   },
   computed: {
-    buildPrice: function buildPrice() {
+    priceText: function priceText() {
       return '$' + new Intl.NumberFormat("de-DE").format(this.earns);
-    },
-    buildAmount: function buildAmount() {
-      return new Intl.NumberFormat("de-DE").format(this.amountBestSeller);
     }
   },
   methods: {
@@ -2865,48 +2861,121 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      series: [{
+      seriesCervezas: [{
         name: "Cervezas",
         type: 'line',
-        data: [1, 2, 3, 4, 5, 6]
-      }, {
+        data: []
+      }],
+      seriesGanancias: [{
         name: "Ganancias",
         type: 'line',
-        data: [5, 6, 7, 8, 9, 10]
+        data: []
       }],
-      options: {
+      optionsCervezas: {
         chart: {
           height: 350,
           type: 'line',
           zoom: {
-            enabled: false
+            type: 'x',
+            enabled: true,
+            autoScaleYaxis: true
+          },
+          toolbar: {
+            autoSelected: 'zoom'
           }
         },
-        labels: ['a', 'b', 'c', 'd', 'e', 'f'],
+        labels: [],
         stroke: {
           curve: 'smooth'
         },
         xaxis: {
+          type: 'datetime',
           categories: []
         },
-        yaxis: [{
-          title: {
-            text: 'Items'
-          }
-        }, {
-          opposite: true,
-          title: {
-            text: 'Pesos $'
-          }
-        }]
+        colors: ['#FFA704']
       },
-      periodo: '1'
+      optionsGanancias: {
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            type: 'x',
+            enabled: true,
+            autoScaleYaxis: true
+          },
+          toolbar: {
+            autoSelected: 'zoom'
+          }
+        },
+        labels: [],
+        stroke: {
+          curve: 'smooth'
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: []
+        },
+        colors: ['#29CC20']
+      }
     };
   },
-  mounted: function mounted() {}
+  methods: {
+    setOptions: function setOptions(data) {
+      var dates = data.map(function (item) {
+        return item.date;
+      });
+      this.optionsCervezas = {
+        xaxis: {
+          categories: dates
+        }
+      };
+      this.optionsGanancias = {
+        xaxis: {
+          categories: dates
+        }
+      };
+    },
+    refreshBeersChart: function refreshBeersChart(data) {
+      var quantities = data.map(function (item) {
+        return item.quantities;
+      });
+      this.seriesCervezas = [{
+        data: quantities
+      }];
+    },
+    refreshEarningsChart: function refreshEarningsChart(data) {
+      var earnings = data.map(function (item) {
+        return item.earnings;
+      });
+      this.seriesGanancias = [{
+        data: earnings
+      }];
+    },
+    updateChart: function updateChart() {
+      var _this = this;
+
+      axios.get('/api/orders/quantities').then(function (response) {
+        _this.setOptions(response['data']);
+
+        _this.refreshBeersChart(response['data']);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+      axios.get('/api/orders/earnings').then(function (response) {
+        _this.refreshEarningsChart(response['data']);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.updateChart();
+  }
 });
 
 /***/ }),
@@ -40679,7 +40748,7 @@ var render = function() {
             _c("div", { staticClass: "media align-items-stretch" }, [
               _c("div", { staticClass: "align-self-center" }, [
                 _c("h1", { staticClass: "mr-2 text-default" }, [
-                  _vm._v(_vm._s(_vm.buildPrice))
+                  _vm._v(_vm._s(_vm.priceText))
                 ])
               ]),
               _vm._v(" "),
@@ -40819,6 +40888,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "row" },
     [
       _c("h3", [_vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")]),
       _vm._v(" "),
@@ -40904,63 +40974,43 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("h3", [_vm._v("Cervezas y ganancias")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.periodo,
-              expression: "periodo"
-            }
-          ],
-          attrs: { id: "periodo" },
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.periodo = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.updateChart(_vm.periodo)
-              }
-            ]
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col-6" },
+      [
+        _c("h3", [_vm._v("Ventas históricas")]),
+        _vm._v(" "),
+        _c("apexchart", {
+          attrs: {
+            width: "500",
+            type: "line",
+            options: _vm.optionsCervezas,
+            series: _vm.seriesCervezas
           }
-        },
-        [
-          _c("option", { attrs: { value: "1" } }, [_vm._v("Por día")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "30" } }, [_vm._v("Por mes")])
-        ]
-      ),
-      _vm._v(" "),
-      _c("apexchart", {
-        attrs: {
-          width: "500",
-          type: "line",
-          options: _vm.options,
-          series: _vm.series
-        }
-      }),
-      _vm._v("\n    `    ")
-    ],
-    1
-  )
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-6" },
+      [
+        _c("h3", [_vm._v("Ganancias históricas")]),
+        _vm._v(" "),
+        _c("apexchart", {
+          attrs: {
+            width: "500",
+            type: "line",
+            options: _vm.optionsGanancias,
+            series: _vm.seriesGanancias
+          }
+        })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
