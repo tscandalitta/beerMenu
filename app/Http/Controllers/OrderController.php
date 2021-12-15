@@ -148,9 +148,7 @@ class OrderController extends Controller
             
             $nextDay->add(new DateInterval('P1D'));
             
-            $orders = Order::where("created_at", ">=", $indexDay->format("Y-m-d 00:00:00"))
-                        ->where("created_at", "<=", $nextDay->format("Y-m-d 00:00:00"))
-                        ->get();
+            $orders = $orders = $this->getOrdersBetweenDates($indexDay, $nextDay);
 
             $total = $orders->reduce(function($carry, $order){
                 return $carry + $order->getTotal();
@@ -162,6 +160,39 @@ class OrderController extends Controller
         }
         
         return response()->json($response);
+    }
+
+    public function quantitiesByDay()
+    {
+        $oldestDate = Order::oldest()->first()->created_at;
+        $indexDay = (new DateTime($oldestDate));
+        $nextDay = (new DateTime($oldestDate));
+        
+        $today = (new DateTime("now"));
+        $response = [];
+
+        while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
+            
+            $nextDay->add(new DateInterval('P1D'));
+            
+            $orders = $this->getOrdersBetweenDates($indexDay, $nextDay);
+
+            $quantities = $orders->reduce(function($carry, $order){
+                return $carry + $order->getQuantities();
+            }, 0);
+
+            array_push($response, ["date" => $indexDay->format("Y-m-d"), "quantitites" => $quantities]);
+
+            $indexDay->add(new DateInterval('P1D'));
+        }
+        
+        return response()->json($response);
+    }
+
+    public function getOrdersBetweenDates($startDate, $finishDate){
+        return Order::where("created_at", ">=",$startDate->format("Y-m-d 00:00:00"))
+                    ->where("created_at", "<=", $finishDate->format("Y-m-d 00:00:00"))
+                    ->get();
     }
 
     public function realTime() {

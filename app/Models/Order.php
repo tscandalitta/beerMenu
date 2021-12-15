@@ -25,4 +25,10 @@ class Order extends Model
             return $carry + $item->price * $item->pivot->items_amount;
         });
     }
+
+    public function getQuantities(){
+        return $this->items->reduce(function ($carry, $item) {
+            return $carry + $item->pivot->items_amount;
+        });
+    }
 }
