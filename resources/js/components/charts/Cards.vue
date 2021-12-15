@@ -7,7 +7,7 @@
                     <div class="card-body ">
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
-                                <h1 class="mr-2 text-default">{{ buildPrice }}</h1>
+                                <h1 class="mr-2 text-default">{{ priceText }}</h1>
                             </div>
                             <div class="media-body ml-4">
                                 <h4 class="text-dark">Ganancias</h4>
@@ -59,8 +59,6 @@
 </template>
 
 <script>
-const LAST_HOURS = 48;
-
 
 export default {
     data() {
@@ -72,12 +70,9 @@ export default {
         }
     },
     computed: {
-        buildPrice() {
+        priceText() {
             return '$' + new Intl.NumberFormat("de-DE").format(this.earns);
         },
-        buildAmount() {
-            return new Intl.NumberFormat("de-DE").format(this.amountBestSeller);
-        }
     },
     methods: {
         getEarns() {
