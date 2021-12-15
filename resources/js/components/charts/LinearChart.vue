@@ -1,10 +1,6 @@
 <template>
     <div>
         <h3>Cervezas y ganancias</h3>
-        <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
-            <option value="1">Por día</option>
-            <option value="30">Por mes</option>
-        </select>
         <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
         `    </div>
 </template>
@@ -28,7 +24,12 @@ export default {
                     height: 350,
                     type: 'line',
                     zoom: {
-                        enabled: false
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    toolbar: {
+                        autoSelected: 'zoom'
                     }
                 },
                 labels: ['a','b','c','d','e','f'],
@@ -49,11 +50,24 @@ export default {
                     },
                 }],
             },
-            periodo: '1',
         }
     },
+    methods: {
+        updateChart: function (periodo) {
+            axios
+                .get('/api/items-summary', {
+                    params: {
+                        days: periodo,
+                    }
+                })
+                .then(response => {
+                    this.refreshChart(response['data']);
+                })
+                .catch(error => console.error(error));
+        },
+    },
     mounted() {
-
+        //this.updateChart();
     }
 }
 </script>
