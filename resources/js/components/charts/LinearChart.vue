@@ -1,7 +1,12 @@
 <template>
-    <div class="container">
-        <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
-    </div>
+    <div>
+        <h3>Cervezas y ganancias</h3>
+        <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
+            <option value="1">Por día</option>
+            <option value="30">Por mes</option>
+        </select>
+        <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+        `    </div>
 </template>
 
 <script>
@@ -10,10 +15,15 @@ export default {
     data() {
         return {
             series: [{
-                name: "",
-                data: [],
+                name: "Cervezas",
+                type: 'line',
+                data: [1,2,3,4,5,6],
+            }, {
+                name: "Ganancias",
+                type: 'line',
+                data: [5,6,7,8,9,10],
             }],
-            chartOptions: {
+            options: {
                 chart: {
                     height: 350,
                     type: 'line',
@@ -21,49 +31,29 @@ export default {
                         enabled: false
                     }
                 },
-                labels: [],
-                dataLabels: {
-                    enabled: false
-                },
+                labels: ['a','b','c','d','e','f'],
                 stroke: {
                     curve: 'smooth',
-                    colors: ['#CD5C5C'],
-                },
-                title: {
-                    text: '',
-                    align: 'left'
-                },
-                grid: {
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                        opacity: 0.5
-                    },
                 },
                 xaxis: {
                     categories: [],
-                }
+                },
+                yaxis: [{
+                    title: {
+                        text: 'Items',
+                    },
+                }, {
+                    opposite: true,
+                    title: {
+                        text: 'Pesos $',
+                    },
+                }],
             },
+            periodo: '1',
         }
     },
     mounted() {
-        axios
-            .get('/api/items-date', {})
-            .then(response => {
-                let amounts = [];
-                let dates = []
-                for (const item of response['data']) {
-                    dates.push(item.date);
-                    amounts.push(item.sold_items);
-                }
-                this.series = [{
-                    name: "Cantidad",
-                    data: amounts
-                }];
-                this.chartOptions = {
-                    labels: dates
-                };
-            })
-            .catch(error => console.error(error));
+
     }
 }
 </script>

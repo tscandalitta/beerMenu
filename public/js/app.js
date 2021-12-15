@@ -2854,12 +2854,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2870,10 +2869,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   data: function data() {
     return {
       series: [{
-        name: "",
-        data: []
+        name: "Cervezas",
+        type: 'line',
+        data: [1, 2, 3, 4, 5, 6]
+      }, {
+        name: "Ganancias",
+        type: 'line',
+        data: [5, 6, 7, 8, 9, 10]
       }],
-      chartOptions: {
+      options: {
         chart: {
           height: 350,
           type: 'line',
@@ -2881,64 +2885,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             enabled: false
           }
         },
-        labels: [],
-        dataLabels: {
-          enabled: false
-        },
+        labels: ['a', 'b', 'c', 'd', 'e', 'f'],
         stroke: {
-          curve: 'smooth',
-          colors: ['#CD5C5C']
-        },
-        title: {
-          text: '',
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'],
-            // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
+          curve: 'smooth'
         },
         xaxis: {
           categories: []
-        }
-      }
+        },
+        yaxis: [{
+          title: {
+            text: 'Items'
+          }
+        }, {
+          opposite: true,
+          title: {
+            text: 'Pesos $'
+          }
+        }]
+      },
+      periodo: '1'
     };
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    axios.get('/api/items-date', {}).then(function (response) {
-      var amounts = [];
-      var dates = [];
-
-      var _iterator = _createForOfIteratorHelper(response['data']),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var item = _step.value;
-          dates.push(item.date);
-          amounts.push(item.sold_items);
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      _this.series = [{
-        name: "Cantidad",
-        data: amounts
-      }];
-      _this.chartOptions = {
-        labels: dates
-      };
-    })["catch"](function (error) {
-      return console.error(error);
-    });
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -40938,16 +40906,58 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
     [
+      _c("h3", [_vm._v("Cervezas y ganancias")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.periodo,
+              expression: "periodo"
+            }
+          ],
+          attrs: { id: "periodo" },
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.periodo = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              function($event) {
+                return _vm.updateChart(_vm.periodo)
+              }
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Por día")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "30" } }, [_vm._v("Por mes")])
+        ]
+      ),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: {
           width: "500",
-          type: "bar",
+          type: "line",
           options: _vm.options,
           series: _vm.series
         }
-      })
+      }),
+      _vm._v("\n    `    ")
     ],
     1
   )

@@ -3,8 +3,9 @@
 @section('title','Estadísticas')
 @section('content')
     <div class="container">
-        <cards></cards> 
+        <cards></cards>
         <charts></charts>
+        <linearchart></linearchart>
     </div>
 {{--    <piechart></piechart>--}}
 {{--    <barchart></barchart>--}}
