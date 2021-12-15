@@ -7,6 +7,9 @@ use App\Libraries\StartDateBuilder;
 use App\Models\Order;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use DateTime;
+use DateInterval;
+
 
 class OrderController extends Controller
 {
@@ -134,8 +137,31 @@ class OrderController extends Controller
 
     public function earningsByDay()
     {
-        $oldest = Order::oldest()->first();
-        return $oldest;
+        $oldestDate = Order::oldest()->first()->created_at;
+        $indexDay = (new DateTime($oldestDate));
+        $nextDay = (new DateTime($oldestDate));
+        
+        $today = (new DateTime("now"));
+        $response = [];
+
+        while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
+            
+            $nextDay->add(new DateInterval('P1D'));
+            
+            $orders = Order::where("created_at", ">=", $indexDay->format("Y-m-d 00:00:00"))
+                        ->where("created_at", "<=", $nextDay->format("Y-m-d 00:00:00"))
+                        ->get();
+
+            $total = $orders->reduce(function($carry, $order){
+                return $carry + $order->getTotal();
+            }, 0);
+
+            array_push($response, ["date" => $indexDay->format("Y-m-d"), "earnings" => $total]);
+
+            $indexDay->add(new DateInterval('P1D'));
+        }
+        
+        return response()->json($response);
     }
 
     public function realTime() {

@@ -15,7 +15,7 @@ class CreateAttentionRequestsTable extends Migration
     {
         Schema::create('attention_requests', function (Blueprint $table) {
             $table->id();
-            $table->integer('table_id')->unsigned()->index()->nullable();
+            $table->bigInteger('table_id')->unsigned()->index()->nullable();
             $table->foreign('table_id')->references('id')->on('tables');
             $table->enum('type', ['BILL', 'WAITER']);
             $table->char('comments');
