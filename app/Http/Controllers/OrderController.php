@@ -181,7 +181,7 @@ class OrderController extends Controller
                 return $carry + $order->getQuantities();
             }, 0);
 
-            array_push($response, ["date" => $indexDay->format("Y-m-d"), "quantitites" => $quantities]);
+            array_push($response, ["date" => $indexDay->format("Y-m-d"), "quantities" => $quantities]);
 
             $indexDay->add(new DateInterval('P1D'));
         }
