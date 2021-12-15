@@ -4,19 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Order;
-use DateTime;
+use App\Libraries\StartDateBuilder;
+
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
-    const DEFAULT_DELTA_DAYS = -1;
-    const DEFAULT_DELTA_HOURS = 0;
-    const HISTORICAL_FLAG = -1;
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
@@ -39,8 +38,8 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -51,8 +50,8 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\JsonResponse
+     * @param Item $item
+     * @return JsonResponse
      */
     public function show(Item $item)
     {
@@ -62,7 +61,7 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param Item $item
      * @return Response
      */
     public function edit(Item $item)
@@ -73,9 +72,9 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @param Item $item
+     * @return JsonResponse
      */
     public function update(Request $request, Item $item)
     {
@@ -87,7 +86,7 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Item  $item
+     * @param Item $item
      * @return Response
      */
     public function destroy(Item $item)
@@ -97,18 +96,9 @@ class ItemController extends Controller
 
     public function summary()
     {
-        $delta_days = request('days', self::DEFAULT_DELTA_DAYS);
-        $delta_hours = request('hours', self::DEFAULT_DELTA_HOURS);
+        $startDate = StartDateBuilder::getStartDate();
 
-        if ($delta_days != self::HISTORICAL_FLAG) {
-            $delta_seconds = $delta_days * 24 * 60 * 60 + $delta_hours * 60 * 60;
-            $start_date_seconds = (new DateTime())->getTimestamp() - $delta_seconds;
-            $start_date = $this->createDate($start_date_seconds);
-        }
-        else
-            $start_date = $this->createDate(0);
-
-        $orders = Order::where('created_at','>=',$start_date)->get();
+        $orders = Order::where('created_at', '>=', $startDate)->get();
         $items = [];
 
         foreach ($orders as $order) {
@@ -123,8 +113,4 @@ class ItemController extends Controller
         return response()->json($items);
     }
 
-    function createDate($timestamp)
-    {
-        return (new DateTime())->setTimestamp($timestamp)->format("Y-m-d H:i:s");
-    }
 }
