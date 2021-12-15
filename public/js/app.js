@@ -2624,14 +2624,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 //
 //
 //
@@ -2710,38 +2702,21 @@ var LAST_HOURS = 48;
       return new Intl.NumberFormat("de-DE").format(this.amountBestSeller);
     }
   },
-  methods: _defineProperty({
+  methods: {
     getEarns: function getEarns() {
-      this.earns = 0;
-
-      var _iterator = _createForOfIteratorHelper(this.lastHoursData),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var item = _step.value;
-          this.earns += item.amount * item.price;
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    },
-    updateEarns: function updateEarns(event) {
       var _this = this;
 
-      axios.get("/api/orders/total?days=".concat(event.target.value)).then(function (response) {
+      axios.get("/api/orders/total?days=1").then(function (response) {
         _this.earns = response.data.total;
       })["catch"](function (error) {
         return console.error(error);
       });
     },
-    updateBestSeller: function updateBestSeller(event) {
+    updateEarns: function updateEarns(event) {
       var _this2 = this;
 
-      axios.get("/api/items-summary?days=".concat(event.target.value)).then(function (response) {
-        _this2.bestSeller = "";
+      axios.get("/api/orders/total?days=".concat(event.target.value)).then(function (response) {
+        _this2.earns = response.data.total;
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -2750,20 +2725,27 @@ var LAST_HOURS = 48;
       var _this3 = this;
 
       axios.get("/api/items-summary?days=1").then(function (response) {
-        _this3.bestSeller = "";
+        var entries = Object.entries(response.data).sort(function (a, b) {
+          return a[1] - b[1];
+        });
+        _this3.bestSeller = entries[entries.length - 1][0];
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    updateBestSeller: function updateBestSeller(event) {
+      var _this4 = this;
+
+      axios.get("/api/items-summary?days=".concat(event.target.value)).then(function (response) {
+        var entries = Object.entries(response.data).sort(function (a, b) {
+          return a[1] - b[1];
+        });
+        _this4.bestSeller = entries[entries.length - 1][0];
       })["catch"](function (error) {
         return console.error(error);
       });
     }
-  }, "getEarns", function getEarns() {
-    var _this4 = this;
-
-    axios.get("/api/orders/total?days=1").then(function (response) {
-      _this4.earns = response.data.total;
-    })["catch"](function (error) {
-      return console.error(error);
-    });
-  }),
+  },
   mounted: function mounted() {
     this.getEarns();
     this.getBestSeller();
@@ -2803,14 +2785,25 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         chart: {
-          id: 'vuechart-example'
+          id: 'vuechart-example',
+          animations: {
+            speed: 200
+          }
         },
         xaxis: {
           categories: []
+        },
+        legend: {
+          show: false
+        },
+        plotOptions: {
+          bar: {
+            distributed: true
+          }
         }
       },
       series: [{
-        name: 'series-1',
+        name: 'cantidad',
         data: []
       }],
       periodo: '1'
@@ -40859,7 +40852,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h3", [_vm._v("Los 5 mas vendidos")]),
+      _c("h3", [_vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")]),
       _vm._v(" "),
       _c(
         "select",

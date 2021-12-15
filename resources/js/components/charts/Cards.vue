@@ -21,7 +21,7 @@
                                     </div>
                                 </div>
                             </div>
-                               
+
                             <div class="align-self-center mr-3">
                                 <i class="fa fa-wallet fa-3x text-default"></i>
                             </div>
@@ -81,10 +81,11 @@ export default {
     },
     methods: {
         getEarns() {
-            this.earns = 0;
-            for (const item of this.lastHoursData) {
-                this.earns += item.amount * item.price;
-            }
+            axios.get(`/api/orders/total?days=1`)
+                .then(response => {
+                    this.earns = response.data.total;
+                })
+                .catch(error => console.error(error));
         },
         updateEarns(event) {
             axios.get(`/api/orders/total?days=${event.target.value}`)
@@ -93,24 +94,19 @@ export default {
             })
             .catch(error => console.error(error));
         },
+        getBestSeller() {
+            axios.get(`/api/items-summary?days=1`)
+                .then(response => {
+                    const entries = Object.entries(response.data).sort((a, b) => a[1] - b[1]);
+                    this.bestSeller = entries[entries.length - 1][0]
+                })
+                .catch(error => console.error(error));
+        },
         updateBestSeller(event) {
             axios.get(`/api/items-summary?days=${event.target.value}`)
             .then(response => {
-                this.bestSeller = ""
-            })
-            .catch(error => console.error(error));
-        },
-        getBestSeller() {
-            axios.get(`/api/items-summary?days=1`)
-            .then(response => {
-                this.bestSeller = ""
-            })
-            .catch(error => console.error(error));
-        },
-        getEarns() {
-            axios.get(`/api/orders/total?days=1`)
-            .then(response => {
-                this.earns = response.data.total;
+                const entries = Object.entries(response.data).sort((a, b) => a[1] - b[1]);
+                this.bestSeller = entries[entries.length - 1][0]
             })
             .catch(error => console.error(error));
         }

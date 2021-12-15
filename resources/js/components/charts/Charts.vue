@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Los 5 mas vendidos</h3>
+        <h3>Las 5 cervezas más vendidas, no trae 5, trae todas</h3>
         <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
             <option value="1">día</option> <!-- en realidad son 24hs esto, deberia ser el acumulado del dia !-->
             <option value="7">semana</option>
@@ -19,13 +19,16 @@ export default {
         return {
             options: {
                 chart: {
-                    id: 'vuechart-example'
+                    id: 'vuechart-example',
+                    animations: {
+                        speed: 200
+                    }
                 },
                 xaxis: {
                     categories: []
                 },
-                theme: {
-                    palette: 'palette1'
+                legend: {
+                    show: false
                 },
                 plotOptions: {
                     bar: {
@@ -34,7 +37,7 @@ export default {
                 },
             },
             series: [{
-                name: 'series-1',
+                name: 'cantidad',
                 data: []
             }],
             periodo: '1',
