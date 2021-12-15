@@ -25,7 +25,7 @@ export default {
                     categories: []
                 },
                 theme: {
-                    palette: 'palette1' // upto palette10
+                    palette: 'palette1'
                 },
                 plotOptions: {
                     bar: {
