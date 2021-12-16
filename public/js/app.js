@@ -2776,12 +2776,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      options: {
+      barOptions: {
         chart: {
-          id: 'vuechart-example',
+          id: 'barras-items',
           animations: {
             speed: 200
           }
@@ -2798,26 +2804,21 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       },
-      series: [{
+      barSeries: [{
         name: 'cantidad',
         data: []
       }],
-      periodo: '1'
+      periodo: '1',
+      donutSeries: [],
+      donutOptions: {
+        chart: {
+          type: 'donut'
+        },
+        labels: []
+      }
     };
   },
   methods: {
-    refreshChart: function refreshChart(data) {
-      var newData = Object.values(data);
-      this.series = [{
-        data: newData
-      }];
-      var newCategories = Object.keys(data);
-      this.options = {
-        xaxis: {
-          categories: newCategories
-        }
-      };
-    },
     updateChart: function updateChart(periodo) {
       var _this = this;
 
@@ -2830,10 +2831,43 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.error(error);
       });
+    },
+    refreshChart: function refreshChart(data) {
+      var newData = Object.values(data);
+      this.series = [{
+        data: newData
+      }];
+      var newCategories = Object.keys(data);
+      this.options = {
+        xaxis: {
+          categories: newCategories
+        }
+      };
+    },
+    updateDonutChart: function updateDonutChart() {
+      var _this2 = this;
+
+      axios.get('/api/orders/by_table').then(function (response) {
+        _this2.refreshDonutChart(response['data']);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    refreshDonutChart: function refreshDonutChart(data) {
+      var tables = data.map(function (item) {
+        return "Mesa ".concat(item.table);
+      });
+      this.donutOptions = {
+        labels: tables
+      };
+      this.donutSeries = data.map(function (item) {
+        return item.orders;
+      });
     }
   },
   mounted: function mounted() {
     this.updateChart(this.periodo);
+    this.updateDonutChart();
   }
 });
 
@@ -40886,70 +40920,91 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      _c("h3", [_vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.periodo,
-              expression: "periodo"
-            }
-          ],
-          attrs: { id: "periodo" },
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.periodo = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.updateChart(_vm.periodo)
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col" },
+      [
+        _c("h3", [
+          _vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.periodo,
+                expression: "periodo"
               }
-            ]
+            ],
+            attrs: { id: "periodo" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.periodo = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.updateChart(_vm.periodo)
+                }
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { value: "1" } }, [_vm._v("día")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "7" } }, [_vm._v("semana")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "30" } }, [_vm._v("mes")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "365" } }, [_vm._v("año")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "" } }, [_vm._v("histórico")])
+          ]
+        ),
+        _vm._v(" "),
+        _c("apexchart", {
+          attrs: {
+            width: "500",
+            type: "bar",
+            options: _vm.barOptions,
+            series: _vm.barSeries
           }
-        },
-        [
-          _c("option", { attrs: { value: "1" } }, [_vm._v("día")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "7" } }, [_vm._v("semana")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "30" } }, [_vm._v("mes")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "365" } }, [_vm._v("año")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "" } }, [_vm._v("histórico")])
-        ]
-      ),
-      _vm._v(" "),
-      _c("apexchart", {
-        attrs: {
-          width: "500",
-          type: "bar",
-          options: _vm.options,
-          series: _vm.series
-        }
-      }),
-      _vm._v("\n`    ")
-    ],
-    1
-  )
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col" },
+      [
+        _c("h3", [_vm._v("Pedidos por mesa")]),
+        _vm._v(" "),
+        _c("apexchart", {
+          attrs: {
+            type: "donut",
+            options: _vm.donutOptions,
+            series: _vm.donutSeries
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v("\n`    ")
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

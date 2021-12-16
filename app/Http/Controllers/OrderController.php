@@ -121,6 +121,17 @@ class OrderController extends Controller
         //
     }
 
+    public function totalOrdersByTable()
+    {
+        $tables = Table::all();
+        $response = [];
+
+        foreach ($tables as $table) {
+            array_push($response, [ "table" => $table->id, "orders" => count($table->orders()->get())]);
+        }
+        return response()->json($response);
+    }
+
     public function totalEarns()
     {
         $startDate = StartDateBuilder::getStartDate();
@@ -140,15 +151,15 @@ class OrderController extends Controller
         $oldestDate = Order::oldest()->first()->created_at;
         $indexDay = (new DateTime($oldestDate));
         $nextDay = (new DateTime($oldestDate));
-        
+
         $today = (new DateTime("now"));
         $response = [];
 
         while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
-            
+
             $nextDay->add(new DateInterval('P1D'));
-            
-            $orders = $orders = $this->getOrdersBetweenDates($indexDay, $nextDay);
+
+            $orders = $this->getOrdersBetweenDates($indexDay, $nextDay);
 
             $total = $orders->reduce(function($carry, $order){
                 return $carry + $order->getTotal();
@@ -158,7 +169,7 @@ class OrderController extends Controller
 
             $indexDay->add(new DateInterval('P1D'));
         }
-        
+
         return response()->json($response);
     }
 
@@ -167,14 +178,14 @@ class OrderController extends Controller
         $oldestDate = Order::oldest()->first()->created_at;
         $indexDay = (new DateTime($oldestDate));
         $nextDay = (new DateTime($oldestDate));
-        
+
         $today = (new DateTime("now"));
         $response = [];
 
         while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
-            
+
             $nextDay->add(new DateInterval('P1D'));
-            
+
             $orders = $this->getOrdersBetweenDates($indexDay, $nextDay);
 
             $quantities = $orders->reduce(function($carry, $order){
@@ -185,7 +196,7 @@ class OrderController extends Controller
 
             $indexDay->add(new DateInterval('P1D'));
         }
-        
+
         return response()->json($response);
     }
 

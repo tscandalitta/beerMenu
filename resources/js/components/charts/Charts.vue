@@ -1,14 +1,20 @@
 <template>
     <div class="row">
-        <h3>Las 5 cervezas más vendidas, no trae 5, trae todas</h3>
-        <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
-            <option value="1">día</option> <!-- en realidad son 24hs esto, deberia ser el acumulado del dia !-->
-            <option value="7">semana</option>
-            <option value="30">mes</option>
-            <option value="365">año</option>
-            <option value="">histórico</option>
-        </select>
-        <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
+        <div class="col">
+            <h3>Las 5 cervezas más vendidas, no trae 5, trae todas</h3>
+            <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
+                <option value="1">día</option> <!-- en realidad son 24hs esto, deberia ser el acumulado del dia !-->
+                <option value="7">semana</option>
+                <option value="30">mes</option>
+                <option value="365">año</option>
+                <option value="">histórico</option>
+            </select>
+            <apexchart width="500" type="bar" :options="barOptions" :series="barSeries"></apexchart>
+        </div>
+        <div class="col">
+            <h3>Pedidos por mesa</h3>
+            <apexchart type="donut" :options="donutOptions" :series="donutSeries"></apexchart>
+        </div>
 `    </div>
 
 </template>
@@ -17,9 +23,9 @@
 export default {
     data() {
         return {
-            options: {
+            barOptions: {
                 chart: {
-                    id: 'vuechart-example',
+                    id: 'barras-items',
                     animations: {
                         speed: 200
                     }
@@ -36,22 +42,21 @@ export default {
                     }
                 },
             },
-            series: [{
+            barSeries: [{
                 name: 'cantidad',
                 data: []
             }],
             periodo: '1',
+            donutSeries: [],
+            donutOptions: {
+                chart: {
+                    type: 'donut',
+                },
+                labels: [],
+            },
         }
     },
     methods: {
-        refreshChart: function (data) {
-            let newData = Object.values(data);
-            this.series = [{
-                data: newData
-            }];
-            let newCategories = Object.keys(data);
-            this.options = {xaxis: { categories: newCategories}}
-        },
         updateChart: function (periodo) {
             axios
                 .get('/api/items-summary', {
@@ -64,9 +69,33 @@ export default {
                 })
                 .catch(error => console.error(error));
         },
+        refreshChart: function (data) {
+            let newData = Object.values(data);
+            this.series = [{
+                data: newData
+            }];
+            let newCategories = Object.keys(data);
+            this.options = {xaxis: { categories: newCategories}}
+        },
+        updateDonutChart: function () {
+            axios
+                .get('/api/orders/by_table')
+                .then(response => {
+                    this.refreshDonutChart(response['data']);
+                })
+                .catch(error => console.error(error));
+        },
+        refreshDonutChart: function (data) {
+            let tables = data.map(item => `Mesa ${item.table}`);
+            this.donutOptions = {
+                labels: tables
+            };
+            this.donutSeries = data.map(item => item.orders);
+        },
     },
     mounted() {
         this.updateChart(this.periodo);
+        this.updateDonutChart();
     }
 }
 </script>

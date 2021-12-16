@@ -30,6 +30,7 @@ Route::middleware('api')->get('/orders/table/{table}', [OrderController::class,'
 Route::middleware('api')->get('/orders/total', [OrderController::class,'totalEarns']);
 Route::middleware('api')->get('/orders/earnings', [OrderController::class,'earningsByDay']);
 Route::middleware('api')->get('/orders/quantities', [OrderController::class,'quantitiesByDay']);
+Route::middleware('api')->get('/orders/by_table', [OrderController::class,'totalOrdersByTable']);
 
 
 Route::middleware('api')->get('/tables', [TableController::class,'index']);
