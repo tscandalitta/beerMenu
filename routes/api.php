@@ -32,15 +32,14 @@ Route::middleware('api')->get('/orders/earnings', [OrderController::class,'earni
 Route::middleware('api')->get('/orders/quantities', [OrderController::class,'quantitiesByDay']);
 Route::middleware('api')->get('/orders/by_table', [OrderController::class,'totalOrdersByTable']);
 
-
 Route::middleware('api')->get('/tables', [TableController::class,'index']);
 Route::middleware('api')->post('/tables', [TableController::class,'store']);
 Route::middleware('api')->get('/tables/{table}', [TableController::class,'show']);
 Route::middleware('api')->post('/tables/{table}', [TableController::class,'close']);
 
-Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
-
 Route::middleware('api')->get('/attention_requests', [AttentionRequestController::class,'index']);
 Route::middleware('api')->post('/attention_requests', [AttentionRequestController::class,'store']);
 Route::middleware('api')->delete('/attention_requests/{attention_request}', [AttentionRequestController::class,'destroy']);
+
+Route::middleware('api')->get('/qrcode', [TableController::class,'generateQR']);
 
