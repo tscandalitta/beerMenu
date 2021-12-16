@@ -20,17 +20,13 @@ window.Vue = require('vue').default;
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 Vue.component('charts', require('./components/charts/Charts.vue').default);
-Vue.component('barchart', require('./components/charts/BarChart.vue').default);
 Vue.component('linearchart', require('./components/charts/LinearChart.vue').default);
-Vue.component('piechart', require('./components/charts/PieChart.vue').default);
-Vue.component('realtimechart', require('./components/charts/RealtimeChart.vue').default);
 Vue.component('cards', require('./components/charts/Cards.vue').default);
 
 Vue.component('ordenes', require('./components/Ordenes.vue').default);
 Vue.component('tables', require('./components/Tables.vue').default);
 Vue.component('items', require('./components/Items.vue').default);
 Vue.component('item-form', require('./components/ItemForm.vue').default);
-Vue.component('item-edit-form', require('./components/ItemEditForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
