@@ -15,7 +15,7 @@ class TableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 5; $i++){
+        for ($i = 1; $i <= 10; $i++){
             DB::table('tables')->insert([
                 'number' => $i,
                 'token' => Str::random(20),
@@ -23,7 +23,7 @@ class TableSeeder extends Seeder
         }
 
         DB::table('tables')->insert([
-            'number' => 6,
+            'number' => 11,
             'token' => "AAA",
         ]);
 
