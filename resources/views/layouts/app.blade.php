@@ -47,13 +47,17 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('real-time-orders') }}">Ver ordenes</a>
-                    </li>
+                    @can('retrieve orders')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('real-time-orders') }}">Ver ordenes</a>
+                        </li>
+                    @endcan
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('show-tables') }}">Ver mesas</a>
-                    </li>
+                    @can('retrieve tables')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('show-tables') }}">Ver mesas</a>
+                        </li>
+                    @endcan
 
                     @can('update items')
                         <li class="nav-item">

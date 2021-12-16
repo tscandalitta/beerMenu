@@ -57,6 +57,7 @@ class PermissionSeeder extends Seeder
         ]);
 
         $waiterRole->syncPermissions([
+            $retrieveOrders,
             $retrieveTables,
             $updateTables
         ]);
