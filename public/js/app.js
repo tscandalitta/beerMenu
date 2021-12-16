@@ -40919,9 +40919,7 @@ var render = function() {
       "div",
       { staticClass: "col" },
       [
-        _c("h3", [
-          _vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")
-        ]),
+        _c("h3", [_vm._v("Cervezas")]),
         _vm._v(" "),
         _c(
           "select",
