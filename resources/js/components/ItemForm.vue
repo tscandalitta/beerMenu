@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
-                <h3 v-if="item">Update Item</h3>
+                <h3 v-if="item.name !== ''">Update Item</h3>
                 <h3 v-else>Create Item</h3>
             </div>
         </div>
@@ -73,7 +73,6 @@
 export default {
     props: {
         item: {
-            type: Object,
             default(){
                 return {
                     name: "",
@@ -88,10 +87,10 @@ export default {
     data() {
         console.log(this.item.description);
         return {
-            name: this.item.description || "",
-            description: this.item.description || "",
-            price: this.item.price || 0,
-            inStock: this.item.in_stock || false
+            name: this.item.name,
+            description: this.item.description,
+            price: this.item.price,
+            inStock: this.item.in_stock
         }
     },
     methods: {

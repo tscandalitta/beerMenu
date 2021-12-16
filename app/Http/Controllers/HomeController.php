@@ -26,7 +26,7 @@ class HomeController extends Controller
     }
 
     public function updateItem(Item $item){
-        return view('items.edit_item');
+        return view('items.create_item', compact('item'));
     }
 
     public function charts(){
