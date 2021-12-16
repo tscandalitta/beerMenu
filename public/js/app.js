@@ -2682,13 +2682,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       earns: 0,
       bestSeller: '',
       amountBestSeller: 0,
-      lastHoursData: ''
+      deltaDaysBestSeller: 1,
+      deltaDaysEarnings: 1
     };
   },
   computed: {
@@ -2697,51 +2700,30 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    getEarns: function getEarns() {
+    getEarnings: function getEarnings() {
       var _this = this;
 
-      axios.get("/api/orders/total?days=1").then(function (response) {
+      axios.get("/api/orders/total?days=".concat(this.deltaDaysEarnings)).then(function (response) {
         _this.earns = response.data.total;
       })["catch"](function (error) {
         return console.error(error);
       });
     },
-    updateEarns: function updateEarns(event) {
+    getBestSeller: function getBestSeller() {
       var _this2 = this;
 
-      axios.get("/api/orders/total?days=".concat(event.target.value)).then(function (response) {
-        _this2.earns = response.data.total;
-      })["catch"](function (error) {
-        return console.error(error);
-      });
-    },
-    getBestSeller: function getBestSeller() {
-      var _this3 = this;
-
-      axios.get("/api/items-summary?days=1").then(function (response) {
+      axios.get("/api/items-summary?days=".concat(this.deltaDaysBestSeller)).then(function (response) {
         var entries = Object.entries(response.data).sort(function (a, b) {
           return a[1] - b[1];
         });
-        _this3.bestSeller = entries[entries.length - 1][0];
-      })["catch"](function (error) {
-        return console.error(error);
-      });
-    },
-    updateBestSeller: function updateBestSeller(event) {
-      var _this4 = this;
-
-      axios.get("/api/items-summary?days=".concat(event.target.value)).then(function (response) {
-        var entries = Object.entries(response.data).sort(function (a, b) {
-          return a[1] - b[1];
-        });
-        _this4.bestSeller = entries[entries.length - 1][0];
+        _this2.bestSeller = entries.at(-1) == undefined ? "-" : entries.at(-1)[0];
       })["catch"](function (error) {
         return console.error(error);
       });
     }
   },
   mounted: function mounted() {
-    this.getEarns();
+    this.getEarnings();
     this.getBestSeller();
   }
 });
@@ -2759,6 +2741,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -40790,12 +40773,35 @@ var render = function() {
                     _c(
                       "select",
                       {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.deltaDaysEarnings,
+                            expression: "deltaDaysEarnings"
+                          }
+                        ],
                         staticClass: "form-control form-control-sm",
                         staticStyle: { width: "120px" },
                         on: {
-                          change: function($event) {
-                            return _vm.updateEarns($event)
-                          }
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.deltaDaysEarnings = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                            function($event) {
+                              return _vm.getEarnings()
+                            }
+                          ]
                         }
                       },
                       [
@@ -40842,12 +40848,35 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.deltaDaysBestSeller,
+                        expression: "deltaDaysBestSeller"
+                      }
+                    ],
                     staticClass: "form-control form-control-sm",
                     staticStyle: { width: "120px" },
                     on: {
-                      change: function($event) {
-                        return _vm.updateBestSeller($event)
-                      }
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.deltaDaysBestSeller = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          return _vm.getBestSeller()
+                        }
+                      ]
                     }
                   },
                   [
@@ -40919,9 +40948,7 @@ var render = function() {
       "div",
       { staticClass: "col" },
       [
-        _c("h3", [
-          _vm._v("Las 5 cervezas más vendidas, no trae 5, trae todas")
-        ]),
+        _c("h3", [_vm._v("Cervezas")]),
         _vm._v(" "),
         _c(
           "select",
@@ -40934,6 +40961,8 @@ var render = function() {
                 expression: "periodo"
               }
             ],
+            staticClass: "form-control form-control-sm",
+            staticStyle: { width: "120px" },
             attrs: { id: "periodo" },
             on: {
               change: [
