@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col">
             <h3>Cervezas</h3>
-            <select id="periodo" @change="updateChart(periodo)" v-model="periodo">
+            <select id="periodo" class="form-control form-control-sm" style="width: 120px" 
+                @change="updateChart(periodo)" v-model="periodo">
                 <option value="1">día</option>
                 <option value="7">semana</option>
                 <option value="30">mes</option>
