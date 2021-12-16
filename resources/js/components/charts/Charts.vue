@@ -71,11 +71,11 @@ export default {
         },
         refreshChart: function (data) {
             let newData = Object.values(data);
-            this.series = [{
+            this.barSeries = [{
                 data: newData
             }];
             let newCategories = Object.keys(data);
-            this.options = {xaxis: { categories: newCategories}}
+            this.barOptions = {xaxis: { categories: newCategories}}
         },
         updateDonutChart: function () {
             axios
