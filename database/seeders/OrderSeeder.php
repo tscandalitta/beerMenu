@@ -26,18 +26,17 @@ class OrderSeeder extends Seeder
         while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
             $table = Table::all()->random();
             $date = new DateTime($indexDay->format("Y-m-d H:i:s"));
-            $randomId = mt_rand(1,6);
-            for ($id = $lastId; $id <= $lastId + $randomId; $id++) {
+            $randomId = mt_rand(2,6);
                 $date->add(new DateInterval('PT1H'));
+            for ($id = $lastId; $id <= $lastId + $randomId; $id++) {
                 DB::table('orders')->insert([
-                    'id' => $id,
                     'table_id' => $table->id,
                     'state' => 'CLOSED',
                     'token' => $table->token,
                     'created_at' => $date->format("Y-m-d H:i:s"),
                     'updated_at' => $date->format("Y-m-d H:i:s"),
                 ]);
-                for ($j = 1; $j < mt_rand(1, 3); $j++) {
+                for ($j = 1; $j < mt_rand(2, 4); $j++) {
                     $item = Item::all()->random();
                     DB::table('item_order')->insert([
                         'item_id' => $item->id,
