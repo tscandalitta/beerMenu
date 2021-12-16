@@ -1,7 +1,6 @@
 <template>
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-5">
+    <div class="row mb-3">
+        <div class="col-6">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body ">
@@ -30,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-6">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body ">
@@ -54,7 +53,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-1"></div>
     </div>
 </template>
 
