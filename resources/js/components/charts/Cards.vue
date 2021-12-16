@@ -12,7 +12,8 @@
                                 <h4 class="text-dark">Ganancias</h4>
                                 <div class="row">
                                     <div class="col-3">
-                                        <select class="form-control form-control-sm" style="width: 120px" @change="updateEarns($event)">
+                                        <select class="form-control form-control-sm" style="width: 120px" 
+                                            @change="getEarnings()" v-model="deltaDaysEarnings">
                                             <option value="1">del dia</option>
                                             <option value="7">de la semana</option>
                                             <option value="30">del mes</option>
@@ -39,7 +40,8 @@
                             </div>
                             <div class="media-body ml-4">
                                 <h4 class="text-dark">Birra más tomada</h4>
-                                 <select class="form-control form-control-sm" style="width: 120px" @change="updateBestSeller($event)">
+                                 <select class="form-control form-control-sm" style="width: 120px" 
+                                    @change="getBestSeller()" v-model="deltaDaysBestSeller">
                                             <option value="1">del dia</option>
                                             <option value="7">de la semana</option>
                                             <option value="30">del mes</option>
@@ -64,7 +66,8 @@ export default {
             earns: 0,
             bestSeller: '',
             amountBestSeller: 0,
-            lastHoursData: '',
+            deltaDaysBestSeller: 1,
+            deltaDaysEarnings: 1
         }
     },
     computed: {
@@ -73,39 +76,24 @@ export default {
         },
     },
     methods: {
-        getEarns() {
-            axios.get(`/api/orders/total?days=1`)
+        getEarnings() {
+            axios.get(`/api/orders/total?days=${this.deltaDaysEarnings}`)
                 .then(response => {
                     this.earns = response.data.total;
                 })
                 .catch(error => console.error(error));
         },
-        updateEarns(event) {
-            axios.get(`/api/orders/total?days=${event.target.value}`)
-            .then(response => {
-                this.earns = response.data.total;
-            })
-            .catch(error => console.error(error));
-        },
         getBestSeller() {
-            axios.get(`/api/items-summary?days=1`)
+            axios.get(`/api/items-summary?days=${this.deltaDaysBestSeller}`)
                 .then(response => {
                     const entries = Object.entries(response.data).sort((a, b) => a[1] - b[1]);
-                    this.bestSeller = entries[entries.length - 1][0]
+                    this.bestSeller = entries.at(-1) == undefined ? "-" : entries.at(-1)[0]
                 })
                 .catch(error => console.error(error));
         },
-        updateBestSeller(event) {
-            axios.get(`/api/items-summary?days=${event.target.value}`)
-            .then(response => {
-                const entries = Object.entries(response.data).sort((a, b) => a[1] - b[1]);
-                this.bestSeller = entries[entries.length - 1][0]
-            })
-            .catch(error => console.error(error));
-        }
     },
     mounted() {
-        this.getEarns();
+        this.getEarnings();
         this.getBestSeller();
     }
 }
