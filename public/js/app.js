@@ -2682,8 +2682,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2834,11 +2832,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     refreshChart: function refreshChart(data) {
       var newData = Object.values(data);
-      this.series = [{
+      this.barSeries = [{
         data: newData
       }];
       var newCategories = Object.keys(data);
-      this.options = {
+      this.barOptions = {
         xaxis: {
           categories: newCategories
         }
@@ -40772,10 +40770,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-1" }),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-5" }, [
+  return _c("div", { staticClass: "row mb-3" }, [
+    _c("div", { staticClass: "col-6" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-content" }, [
           _c("div", { staticClass: "card-body " }, [
@@ -40827,7 +40823,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-5" }, [
+    _c("div", { staticClass: "col-6" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-content" }, [
           _c("div", { staticClass: "card-body " }, [
@@ -40875,9 +40871,7 @@ var render = function() {
           ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-1" })
+    ])
   ])
 }
 var staticRenderFns = [
