@@ -20,13 +20,13 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        $indexDay = new DateTime("2020-09-14 00:00:00");
+        $indexDay = new DateTime("2021-09-14 00:00:00");
         $today = (new DateTime("now"));
         $lastId = 1;
         while($today->format("Y-m-d 00:00:00") != $indexDay->format("Y-m-d 00:00:00")){
             $table = Table::all()->random();
             $date = new DateTime($indexDay->format("Y-m-d H:i:s"));
-            $randomId = mt_rand(1,14);
+            $randomId = mt_rand(1,6);
             for ($id = $lastId; $id <= $lastId + $randomId; $id++) {
                 $date->add(new DateInterval('PT1H'));
                 DB::table('orders')->insert([
@@ -35,8 +35,9 @@ class OrderSeeder extends Seeder
                     'state' => 'CLOSED',
                     'token' => $table->token,
                     'created_at' => $date->format("Y-m-d H:i:s"),
+                    'updated_at' => $date->format("Y-m-d H:i:s"),
                 ]);
-                for ($j = 1; $j < mt_rand(1, 5); $j++) {
+                for ($j = 1; $j < mt_rand(1, 3); $j++) {
                     $item = Item::all()->random();
                     DB::table('item_order')->insert([
                         'item_id' => $item->id,
