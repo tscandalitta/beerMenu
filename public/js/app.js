@@ -1945,23 +1945,18 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     item: {
       "default": function _default() {
-        return {
-          name: "",
-          description: "",
-          price: 0,
-          inStock: false
-        };
+        return null;
       }
     }
   },
   name: "ItemFormComponent",
   data: function data() {
-    console.log(this.item.description);
     return {
-      name: this.item.name,
-      description: this.item.description,
-      price: this.item.price,
-      inStock: this.item.in_stock
+      name: this.item ? this.item.name : "",
+      description: this.item ? this.item.description : "",
+      price: this.item ? this.item.price : 0,
+      inStock: this.item ? this.item.in_stock : false,
+      apiURL: '/api/items'
     };
   },
   methods: {
@@ -1972,7 +1967,13 @@ __webpack_require__.r(__webpack_exports__);
         price: this.price,
         in_stock: this.inStock
       };
-      axios.post('/api/items', config).then(function (_) {
+
+      if (this.item) {
+        var id = window.location.href[window.location.href.lastIndexOf('/') + 1];
+        this.apiURL = this.apiURL + "/".concat(id);
+      }
+
+      axios.post(this.apiURL, config).then(function (_) {
         window.location.href = '/items';
       })["catch"](function (error) {
         return console.error(error);
@@ -38975,7 +38976,7 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-6" }, [
-        _vm.item.name !== ""
+        _vm.item === null
           ? _c("h3", [_vm._v("Update Item")])
           : _c("h3", [_vm._v("Create Item")])
       ])
@@ -39199,7 +39200,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(item.description))]),
               _vm._v(" "),
-              item.in_stock === "1"
+              item.in_stock == "1"
                 ? _c("td", [_c("i", { staticClass: "fas fa-check" })])
                 : _c("td", [_c("i", { staticClass: "fas fa-times" })]),
               _vm._v(" "),

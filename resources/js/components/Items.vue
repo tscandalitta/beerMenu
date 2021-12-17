@@ -13,7 +13,7 @@
                 <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
-                    <td v-if="item.in_stock === '1'"> <i class="fas fa-check"></i></td>
+                    <td v-if="item.in_stock == '1'"> <i class="fas fa-check"></i></td>
                     <td v-else> <i class="fas fa-times"></i></td>
                     <td>
                         <a :href="'/items/update/' + item.id">

@@ -78,7 +78,10 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        $item->fill($request->all());
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+        $item->in_stock = $request->in_stock;
         $item->save();
         return response()->json($item);
     }

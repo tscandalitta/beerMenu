@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
-                <h3 v-if="item.name !== ''">Update Item</h3>
+                <h3 v-if="item === null">Update Item</h3>
                 <h3 v-else>Create Item</h3>
             </div>
         </div>
@@ -74,23 +74,18 @@ export default {
     props: {
         item: {
             default(){
-                return {
-                    name: "",
-                    description:  "",
-                    price:  0,
-                    inStock: false
-                }
+                return null;
             }
         }
     },
     name: "ItemFormComponent",
     data() {
-        console.log(this.item.description);
         return {
-            name: this.item.name,
-            description: this.item.description,
-            price: this.item.price,
-            inStock: this.item.in_stock
+            name: this.item ? this.item.name: "",
+            description: this.item ? this.item.description: "",
+            price: this.item ? this.item.price: 0,
+            inStock: this.item ? this.item.in_stock: false,
+            apiURL: '/api/items'
         }
     },
     methods: {
@@ -101,8 +96,14 @@ export default {
                 price: this.price,
                 in_stock: this.inStock
             }
+            
+            if(this.item){
+                const id = window.location.href[window.location.href.lastIndexOf('/') + 1];
+                this.apiURL = this.apiURL + `/${id}`;     
+            }
+                 
             axios
-                .post('/api/items', config)
+                .post(this.apiURL, config)
                 .then(_ => {
                     window.location.href = '/items'
                 })
