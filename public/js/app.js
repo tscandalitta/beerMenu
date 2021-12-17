@@ -38976,9 +38976,9 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-6" }, [
-        _vm.item === null
-          ? _c("h3", [_vm._v("Update Item")])
-          : _c("h3", [_vm._v("Create Item")])
+        this.item === null
+          ? _c("h3", [_vm._v("Crear Item")])
+          : _c("h3", [_vm._v("Actualizar Item")])
       ])
     ]),
     _vm._v(" "),
@@ -39226,13 +39226,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Description")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Descripcion")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("In Stock")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("En Stock")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Acciones")])
       ])
     ])
   },
@@ -39257,7 +39257,7 @@ var staticRenderFns = [
           staticClass: "btn btn-success float-right",
           attrs: { type: "button" }
         },
-        [_vm._v("Create Item")]
+        [_vm._v("Crear Item")]
       )
     ])
   }

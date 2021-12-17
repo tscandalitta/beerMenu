@@ -3,10 +3,10 @@
         <table class="table text-center">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">In Stock</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">En Stock</th>
+                <th scope="col">Acciones</th>
             </tr>
             </thead>
             <tbody v-for="item in items" v-bind:key="item.id">
@@ -27,7 +27,7 @@
             </tbody>
         </table>
         <a href="/items/create">
-            <button type="button" class="btn btn-success float-right">Create Item</button>
+            <button type="button" class="btn btn-success float-right">Crear Item</button>
         </a>
     </div>
 </template>

@@ -2,8 +2,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
-                <h3 v-if="item === null">Update Item</h3>
-                <h3 v-else>Create Item</h3>
+                <h3 v-if="this.item === null">Crear Item</h3>
+                <h3 v-else>Actualizar Item</h3>
             </div>
         </div>
 
